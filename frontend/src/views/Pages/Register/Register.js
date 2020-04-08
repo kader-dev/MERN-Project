@@ -1,19 +1,55 @@
 import React, { Component } from 'react';
-import { Button, Card, CardBody, CardFooter, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
+import {
+  Button, Card, CardBody, CardFooter, Col, Container,
+  Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row, Alert
+} from 'reactstrap';
 import PropTypes from 'prop-types'
 import { connect } from "react-redux";
 import { register } from '../../../redux/user/userActions'
+import { Redirect } from 'react-router-dom'
 class Register extends Component {
+  constructor() {
+    super()
+    this.state = {
+      name: '',
+      email: '',
+      password: '',
+      re_password: '',
+      msg: '',
+      redirectTo: false
+    }
 
-  state = {
-    name: '',
-    email: '',
-    password: '',
-    re_password: '',
   }
 
+
   static propTypes = {
-    register: PropTypes.func.isRequired
+    isAuthenticated: PropTypes.bool,
+    error: PropTypes.object.isRequired,
+    register: PropTypes.func.isRequired,
+  }
+
+  componentDidUpdate(prevProps) {
+    const { error, isAuthenticated } = this.props
+
+    if (error !== prevProps.error) {
+      if (error.id === 'REGISTER_FAIL') {
+        this.setState({ msg: error.msg.msg })
+      } else {
+        this.setState({ msg: null })
+
+      }
+    }
+    if (!this.state.redirectTo) {
+      if (isAuthenticated) {
+        this.root()
+      }
+    }
+
+  }
+  root = () => {
+    this.setState({
+      redirectTo: true
+    })
   }
 
   onChange = (e) => {
@@ -24,11 +60,15 @@ class Register extends Component {
     e.preventDefault()
     const { name, email, password } = this.state
     const user = { name, email, password }
-    console.log(user)
     this.props.register(user)
   }
 
   render() {
+
+    if (this.state.redirectTo) {
+      return <Redirect to="/dashboard" />
+    }
+
     return (
       <div className="app flex-row align-items-center">
         <Container>
@@ -36,6 +76,7 @@ class Register extends Component {
             <Col md="9" lg="7" xl="6">
               <Card className="mx-4">
                 <CardBody className="p-4">
+                  {this.state.msg ? <Alert color="danger">{this.state.msg}</Alert> : null}
                   <Form onSubmit={this.onSubmit} >
                     <h1>Register</h1>
                     <p className="text-muted">Create your account</p>
@@ -92,4 +133,9 @@ class Register extends Component {
 }
 
 
-export default connect(null, { register })(Register)
+const mapStateToProps = state => ({
+  isAuthenticated: state.user.isAuthenticated,
+  error: state.error
+})
+
+export default connect(mapStateToProps, { register })(Register)
