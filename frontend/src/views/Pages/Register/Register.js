@@ -1,7 +1,33 @@
 import React, { Component } from 'react';
 import { Button, Card, CardBody, CardFooter, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
-
+import PropTypes from 'prop-types'
+import { connect } from "react-redux";
+import { register } from '../../../redux/user/userActions'
 class Register extends Component {
+
+  state = {
+    name: '',
+    email: '',
+    password: '',
+    re_password: '',
+  }
+
+  static propTypes = {
+    register: PropTypes.func.isRequired
+  }
+
+  onChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value })
+  }
+
+  onSubmit = e => {
+    e.preventDefault()
+    const { name, email, password } = this.state
+    const user = { name, email, password }
+    console.log(user)
+    this.props.register(user)
+  }
+
   render() {
     return (
       <div className="app flex-row align-items-center">
@@ -10,7 +36,7 @@ class Register extends Component {
             <Col md="9" lg="7" xl="6">
               <Card className="mx-4">
                 <CardBody className="p-4">
-                  <Form>
+                  <Form onSubmit={this.onSubmit} >
                     <h1>Register</h1>
                     <p className="text-muted">Create your account</p>
                     <InputGroup className="mb-3">
@@ -19,13 +45,13 @@ class Register extends Component {
                           <i className="icon-user"></i>
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input type="text" placeholder="Username" autoComplete="username" />
+                      <Input type="text" placeholder="name" id="name" name="name" onChange={this.onChange} />
                     </InputGroup>
                     <InputGroup className="mb-3">
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>@</InputGroupText>
                       </InputGroupAddon>
-                      <Input type="text" placeholder="Email" autoComplete="email" />
+                      <Input type="email" placeholder="email" id="email" name="email" onChange={this.onChange} />
                     </InputGroup>
                     <InputGroup className="mb-3">
                       <InputGroupAddon addonType="prepend">
@@ -33,7 +59,7 @@ class Register extends Component {
                           <i className="icon-lock"></i>
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input type="password" placeholder="Password" autoComplete="new-password" />
+                      <Input type="password" placeholder="Password" id="password" name="password" onChange={this.onChange} />
                     </InputGroup>
                     <InputGroup className="mb-4">
                       <InputGroupAddon addonType="prepend">
@@ -65,4 +91,5 @@ class Register extends Component {
   }
 }
 
-export default Register;
+
+export default connect(null, { register })(Register)

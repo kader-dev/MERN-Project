@@ -2,9 +2,9 @@ var express = require('express');
 var router = express.Router();
 const User = require('../models/user')
 const auth = require('../middleware/auth')
-
+const cors = require("cors");
 //create user
-router.post('/users', async (req, res) => {
+router.post('/', cors(), async (req, res) => {
   const user = new User(req.body)
   try {
     await user.save()
@@ -16,7 +16,7 @@ router.post('/users', async (req, res) => {
 })
 
 //get all users
-router.get('/users', auth, async (req, res) => {
+router.get('/', auth, async (req, res) => {
   try {
     const users = await User.find({})
     res.status(201).send(users)
@@ -93,14 +93,14 @@ router.get('/profile', auth, async (req, res) => {
 //logout
 router.post('/users/logout', auth, async (req, res) => {
   try {
-      req.user.tokens = req.user.tokens.filter((token) => {
+    req.user.tokens = req.user.tokens.filter((token) => {
 
-          return token.token !== req.token
-      })
-      await req.user.save()
-      res.send('logout')
+      return token.token !== req.token
+    })
+    await req.user.save()
+    res.send('logout')
   } catch (e) {
-      res.status(500).send()
+    res.status(500).send()
   }
 })
 
@@ -108,11 +108,11 @@ router.post('/users/logout', auth, async (req, res) => {
 //logout
 router.post('/users/logoutAll', auth, async (req, res) => {
   try {
-      req.user.tokens = []
-      await req.user.save()
-      res.send('logoutAll')
+    req.user.tokens = []
+    await req.user.save()
+    res.send('logoutAll')
   } catch (e) {
-      res.status(500).send()
+    res.status(500).send()
   }
 })
 
