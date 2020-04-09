@@ -25,7 +25,7 @@ router.get('/', auth, async (req, res) => {
 })
 
 //get user by id
-router.get('/users/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
   const _id = req.params.id
   try {
     const user = await User.findById(_id)
@@ -37,7 +37,7 @@ router.get('/users/:id', async (req, res) => {
 })
 
 //delete user by id
-router.delete('/users/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
   const _id = req.params.id
   try {
     await User.findByIdAndDelete(_id)
@@ -49,7 +49,7 @@ router.delete('/users/:id', async (req, res) => {
 })
 
 //update user
-router.patch('/users/:id', async (req, res) => {
+router.patch('/:id', async (req, res) => {
   const _id = req.params.id
   const updates = Object.keys(req.body)
   const allowedUpdates = ['name', 'email', 'password', 'age']
@@ -74,14 +74,14 @@ router.patch('/users/:id', async (req, res) => {
 })
 
 //login
-router.post('/users/login', async (req, res) => {
+router.post('/login', async (req, res) => {
 
   try {
     const user = await User.findByCredentials(req.body.email, req.body.password)
     const token = await user.generateAuthToekn()
     res.send({ user, token })
   } catch (e) {
-    res.status(400).send()
+    res.status(400).send('user not found')
   }
 })
 
@@ -91,7 +91,7 @@ router.get('/profile', auth, async (req, res) => {
 })
 
 //logout
-router.post('/users/logout', auth, async (req, res) => {
+router.post('/logout', auth, async (req, res) => {
   try {
     req.user.tokens = req.user.tokens.filter((token) => {
 
@@ -106,7 +106,7 @@ router.post('/users/logout', auth, async (req, res) => {
 
 
 //logout
-router.post('/users/logoutAll', auth, async (req, res) => {
+router.post('/logoutAll', auth, async (req, res) => {
   try {
     req.user.tokens = []
     await req.user.save()

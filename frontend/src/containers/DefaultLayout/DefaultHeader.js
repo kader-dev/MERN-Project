@@ -2,22 +2,38 @@ import React, { Component } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { Badge, UncontrolledDropdown, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem } from 'reactstrap';
 import PropTypes from 'prop-types';
-
+import { connect } from 'react-redux'
 import { AppAsideToggler, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
 import logo from '../../assets/img/brand/logo.svg'
 import sygnet from '../../assets/img/brand/sygnet.svg'
-
-const propTypes = {
-  children: PropTypes.node,
-};
-
-const defaultProps = {};
+import { logout } from '../../redux/user/userActions'
+import { Redirect } from 'react-router-dom'
 
 class DefaultHeader extends Component {
+  constructor() {
+    super()
+    this.state = {
+      msg: '',
+      redirectTo: false
+    }
+  }
+
+  static propTypes = {
+    logout: PropTypes.func.isRequired,
+  }
+
+  onSubmit = e => {
+    this.props.logout()
+    this.setState({
+      redirectTo: true
+    })
+  }
+
   render() {
 
-    // eslint-disable-next-line
-    const { children, ...attributes } = this.props;
+    if (this.state.redirectTo) {
+      return <Redirect to="/" />
+    }
 
     return (
       <React.Fragment>
@@ -46,7 +62,7 @@ class DefaultHeader extends Component {
               <DropdownItem header tag="div" className="text-center"><strong>Settings</strong></DropdownItem>
               <DropdownItem><i className="fa fa-user"></i> Profile</DropdownItem>
               <DropdownItem divider />
-              <DropdownItem onClick={e => this.props.onLogout(e)}><i className="fa fa-lock"></i> Logout</DropdownItem>
+              <DropdownItem onClick={this.onSubmit}><i className="fa fa-lock"></i> Logout</DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
         </Nav>
@@ -55,7 +71,8 @@ class DefaultHeader extends Component {
   }
 }
 
-DefaultHeader.propTypes = propTypes;
-DefaultHeader.defaultProps = defaultProps;
-
-export default DefaultHeader;
+const mapStateToProps = state => ({
+  token: state.user.token,
+  error: state.error
+})
+export default connect(mapStateToProps, { logout })(DefaultHeader);

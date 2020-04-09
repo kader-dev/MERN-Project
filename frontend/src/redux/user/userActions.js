@@ -10,6 +10,7 @@ import {
     REGISTER_SUCCESS
 } from './userTypes'
 import { returnErrors } from '../error/errorActions'
+import store from '../store'
 
 export const register = ({ name, email, password }) => dispatch => {
     const config = {
@@ -32,10 +33,14 @@ export const register = ({ name, email, password }) => dispatch => {
         })
 }
 
-export const logout = () => {
-    return {
-        type: LOGOUT_SUCCESS
-    }
+export const logout = () => dispatch => {
+
+    const body = JSON.stringify({})
+    axios.post('http://localhost:4000/users/logoutAll', body, tokenConfig())
+        .then(res => dispatch({
+            type: LOGOUT_SUCCESS
+        })).then(res => console.log('exit'))
+
 }
 
 export const login = ({ email, password }) => dispatch => {
@@ -45,7 +50,7 @@ export const login = ({ email, password }) => dispatch => {
         }
     }
     const body = JSON.stringify({ email, password })
-    axios.post('http://localhost:4000/users', body, config)
+    axios.post('http://localhost:4000/users/login', body, config)
         .then(res => dispatch({
             type: LOGIN_SUCCESS,
             payload: res.data
@@ -61,17 +66,13 @@ export const login = ({ email, password }) => dispatch => {
 
 
 
-export const tokenConfig = getState => {
-    //get token from localstorage
-    const token = getState().auth.token;
-    //headers
+export const tokenConfig = () => {
+    const token = store.getState().user.token
+
     const config = {
         headers: {
-            "Content-type": "application/json"
+            "Authorization": `Bearer ${token}`
         }
-    }
-    if (token) {
-        config.headers['x-auth-token'] = token
     }
     return config;
 }

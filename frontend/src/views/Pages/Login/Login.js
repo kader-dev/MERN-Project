@@ -1,9 +1,71 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
-
+import { Button, Card, CardBody, CardGroup, Col, Container, Form, Alert, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
+import PropTypes from 'prop-types'
+import { connect } from "react-redux";
+import { login } from '../../../redux/user/userActions'
+import { Redirect } from 'react-router-dom'
 class Login extends Component {
+
+  constructor() {
+    super()
+    this.state = {
+      email: '',
+      password: '',
+      msg: '',
+      redirectTo: false
+    }
+
+  }
+
+
+  static propTypes = {
+    isAuthenticated: PropTypes.bool,
+    error: PropTypes.object.isRequired,
+    login: PropTypes.func.isRequired,
+  }
+
+  componentDidUpdate(prevProps) {
+    const { error, isAuthenticated } = this.props
+
+    if (error !== prevProps.error) {
+      if (error.id === 'REGISTER_FAIL') {
+        this.setState({ msg: error.msg.msg })
+      } else {
+        this.setState({ msg: null })
+
+      }
+    }
+    if (!this.state.redirectTo) {
+      if (isAuthenticated) {
+        this.root()
+      }
+    }
+
+  }
+  root = () => {
+    this.setState({
+      redirectTo: true
+    })
+  }
+
+  onChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value })
+  }
+
+  onSubmit = e => {
+    e.preventDefault()
+    const { email, password } = this.state
+    const user = { email, password }
+    console.log(user)
+    this.props.login(user)
+  }
+
   render() {
+
+    if (this.state.redirectTo) {
+      return <Redirect to="/dashboard" />
+    }
     return (
       <div className="app flex-row align-items-center">
         <Container>
@@ -12,7 +74,7 @@ class Login extends Component {
               <CardGroup>
                 <Card className="p-4">
                   <CardBody>
-                    <Form>
+                    <Form onSubmit={this.onSubmit}>
                       <h1>Login</h1>
                       <p className="text-muted">Sign In to your account</p>
                       <InputGroup className="mb-3">
@@ -21,7 +83,7 @@ class Login extends Component {
                             <i className="icon-user"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text" placeholder="Username" autoComplete="username" />
+                        <Input type="text" placeholder="email" id="email" name="email" onChange={this.onChange} />
                       </InputGroup>
                       <InputGroup className="mb-4">
                         <InputGroupAddon addonType="prepend">
@@ -29,7 +91,7 @@ class Login extends Component {
                             <i className="icon-lock"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="password" placeholder="Password" autoComplete="current-password" />
+                        <Input type="password" placeholder="Password" id="password" name="password" onChange={this.onChange} />
                       </InputGroup>
                       <Row>
                         <Col xs="6">
@@ -63,4 +125,8 @@ class Login extends Component {
   }
 }
 
-export default Login;
+const mapStateToProps = state => ({
+  isAuthenticated: state.user.isAuthenticated,
+  error: state.error
+})
+export default connect(mapStateToProps, { login })(Login);
