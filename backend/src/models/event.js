@@ -11,6 +11,11 @@ const unite_pedagogique_Schema = new mongoose.Schema({
         required: true,
         trim: true
     },
+    date: {
+        type: Date,
+        required: true,
+        unique: true
+    },
     Department: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Department'

@@ -43,20 +43,10 @@ const userSchema = new mongoose.Schema({
     role: {
         type: String,
         trim: true
+
     },
-    skills: [{
-        skill: {
-            name: {
-                type: String,
-                trim: true,
-                lowercase: true
-            },
-            level: {
-                type: String,
-                trim: true,
-                lowercase: true
-            }
-        },
+    file: [{
+        type: Buffer
     }],
     tokens: [{
         token: {
@@ -72,6 +62,12 @@ userSchema.virtual('Departments', {
     ref: 'Department',
     localField: '_id',
     foreignField: 'manager'
+})
+
+userSchema.virtual('unite_pedagogiques', {
+    ref: 'unite_pedagogique',
+    localField: '_id',
+    foreignField: 'Department'
 })
 
 userSchema.pre('save', async function (next) {

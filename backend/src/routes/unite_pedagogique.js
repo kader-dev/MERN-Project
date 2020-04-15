@@ -1,13 +1,15 @@
 const express = require('express')
 const unité_pédagogique = require('../models/unite_pedagogique')
-const department = require('../middleware/department')
+const Department = require('../models/department')
+const up = require('../middleware/up')
 const auth = require('../middleware/auth')
 const router = new express.Router()
 const User = require('../models/user')
 
 
 //add up
-router.post('/', async (req, res) => {
+router.post('/', up, async (req, res) => {
+
     const up = new unité_pédagogique({
         ...req.body
     })
@@ -17,12 +19,32 @@ router.post('/', async (req, res) => {
     } catch (e) {
         res.status(400).send(e)
     }
+
+
+    const dep = await Department.findOneAndUpdate(
+        { "_id": req.body.Department._id },
+        { $push: { "list_up": up } },
+        { returnNewDocument: true })
+    dep.save()
+    console.log(dep)
+
 }
 )
 
 //get all up
 router.get('/', async (req, res) => {
     const list_unités_pédagogique = await unité_pédagogique.find({})
+    try {
+        res.status(200).send(list_unités_pédagogique)
+    } catch (e) {
+        res.status(400).send(e)
+    }
+})
+
+//get all up by user
+router.get('/my', up, async (req, res) => {
+
+    const list_unités_pédagogique = await unité_pédagogique.find({ "Department": req.body.Department._id })
     try {
         res.status(200).send(list_unités_pédagogique)
     } catch (e) {
@@ -64,7 +86,6 @@ router.patch('/:id', async (req, res) => {
     } catch (e) {
         res.status(500).send(e)
     }
-
 })
 
 

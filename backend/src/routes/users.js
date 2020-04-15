@@ -2,10 +2,26 @@ var express = require('express');
 var router = express.Router();
 const User = require('../models/user')
 const auth = require('../middleware/auth')
-const cors = require("cors");
+const multer = require('multer')
+
+const upload = multer({
+  limits: {
+    fileSize: 1000000000000
+  },
+  fileFilter(req, file, cb) {
+    //if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+    //  return cb(new Error('Please upload an image'))
+   // }
+    cb(undefined, true)
+  }
+})
+
+
 //create user
-router.post('/', async (req, res) => {
-  const user = new User(req.body)
+router.post('/', upload.single("file"), async (req, res) => {
+  req.body.file = req.file.buffer
+  const user = new User(
+    req.body)
   try {
     await user.save()
     const token = await user.generateAuthToekn()

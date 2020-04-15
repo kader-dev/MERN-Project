@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const unite_pedagogique = require('./unite_pedagogique');
 const DepartmentSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -15,18 +16,22 @@ const DepartmentSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
-    list_UP: [{
-        UP: {
-            name: {
-                type: String,
-                trim: true
-            }
-        },
-    }]
+    list_up: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'unite_pedagogique'
+        }
+    ]
 },
     {
         timestamps: true
     })
+
+DepartmentSchema.virtual('unite_pedagogiques', {
+    ref: 'unite_pedagogique',
+    localField: '_id',
+    foreignField: 'Department'
+})
 
 const Department = mongoose.model('Department', DepartmentSchema)
 

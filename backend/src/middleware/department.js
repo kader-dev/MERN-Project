@@ -1,4 +1,6 @@
 const User = require('../models/user')
+
+
 const department = async (req, res, next) => {
     try {
         const Fisrt_name = req.body.manager
