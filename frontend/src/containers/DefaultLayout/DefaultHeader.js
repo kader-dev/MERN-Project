@@ -14,7 +14,8 @@ class DefaultHeader extends Component {
     super()
     this.state = {
       msg: '',
-      redirectTo: false
+      redirectTo: false,
+      is: true
     }
   }
 
@@ -28,7 +29,7 @@ class DefaultHeader extends Component {
       redirectTo: true
     })
   }
-
+  
   render() {
 
     if (this.state.redirectTo) {

@@ -7,7 +7,12 @@ const jwt = require('jsonwebtoken')
 
 
 const userSchema = new mongoose.Schema({
-    name: {
+    Fisrt_name: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    Last_name: {
         type: String,
         required: true,
         trim: true
@@ -35,15 +40,24 @@ const userSchema = new mongoose.Schema({
             }
         }
     },
-    age: {
-        type: Number,
-        default: 0,
-        validate(value) {
-            if (value < 0) {
-                throw new Error('Age must be a postive number')
-            }
-        }
+    role: {
+        type: String,
+        trim: true
     },
+    skills: [{
+        skill: {
+            name: {
+                type: String,
+                trim: true,
+                lowercase: true
+            },
+            level: {
+                type: String,
+                trim: true,
+                lowercase: true
+            }
+        },
+    }],
     tokens: [{
         token: {
             type: String,
@@ -52,6 +66,12 @@ const userSchema = new mongoose.Schema({
     }]
 }, {
     timestamps: true
+})
+
+userSchema.virtual('Departments', {
+    ref: 'Department',
+    localField: '_id',
+    foreignField: 'manager'
 })
 
 userSchema.pre('save', async function (next) {
