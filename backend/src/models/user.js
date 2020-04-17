@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken')
 
 
 const userSchema = new mongoose.Schema({
-    Fisrt_name: {
+    First_name: {
         type: String,
         required: true,
         trim: true
@@ -15,7 +15,8 @@ const userSchema = new mongoose.Schema({
     Last_name: {
         type: String,
         required: true,
-        trim: true
+        trim: true,
+        uppercase: true
     },
     email: {
         type: String,
@@ -42,12 +43,10 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        trim: true
+        trim: true,
+        default: ''
 
     },
-    file: [{
-        type: Buffer
-    }],
     tokens: [{
         token: {
             type: String,
@@ -108,7 +107,7 @@ userSchema.methods.generateAuthToekn = async function () {
 userSchema.methods.toJSON = function () {
     const user = this
     const userObject = user.toObject()
-
+    delete userObject._id
     delete userObject.password
     delete userObject.tokens
 

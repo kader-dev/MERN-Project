@@ -10,8 +10,8 @@ const upload = multer({
   },
   fileFilter(req, file, cb) {
     //if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
-    //  return cb(new Error('Please upload an image'))
-   // }
+    // return cb(new Error('Please upload an image'))
+    // }
     cb(undefined, true)
   }
 })
@@ -19,7 +19,7 @@ const upload = multer({
 
 //create user
 router.post('/', upload.single("file"), async (req, res) => {
-  req.body.file = req.file.buffer
+  // req.body.file = req.file.buffer
   const user = new User(
     req.body)
   try {
@@ -32,7 +32,7 @@ router.post('/', upload.single("file"), async (req, res) => {
 })
 
 //get all users
-router.get('/', auth, async (req, res) => {
+router.get('/all', auth, async (req, res) => {
   try {
     const users = await User.find({})
     res.status(201).send(users)
@@ -68,7 +68,7 @@ router.delete('/:id', async (req, res) => {
 router.patch('/:id', async (req, res) => {
   const _id = req.params.id
   const updates = Object.keys(req.body)
-  const allowedUpdates = ['name', 'email', 'password', 'age']
+  const allowedUpdates = ['Fisrt_name', 'Last_name', 'email', 'password']
   const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
 
   if (!isValidOperation) {
@@ -86,24 +86,25 @@ router.patch('/:id', async (req, res) => {
   catch (e) {
     res.status(400).send(e)
   }
-
 })
 
 //login
 router.post('/login', async (req, res) => {
-
   try {
     const user = await User.findByCredentials(req.body.email, req.body.password)
     const token = await user.generateAuthToekn()
     res.send({ user, token })
   } catch (e) {
-    res.status(400).send('user not found')
+    res.status(400).send({ msg: 'please enter all fields' })
   }
 })
 
 //get profile
-router.get('/profile', auth, async (req, res) => {
-  res.send(req.user)
+router.get('/user/profile', auth, async (req, res) => {
+  try {
+    res.status(201).send(req.user)
+  }
+  catch (e) { res.status(400).send(e) }
 })
 
 //logout

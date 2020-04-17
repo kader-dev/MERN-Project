@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Card, CardBody, CardGroup, Col, Container, Form, Alert, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
+import {
+  Button, Card, CardBody, CardGroup, Col, Container,
+  Form, Alert, Input, InputGroup, InputGroupAddon, InputGroupText, Row
+} from 'reactstrap';
 import PropTypes from 'prop-types'
 import { connect } from "react-redux";
 import { login } from '../../../redux/user/userActions'
@@ -15,7 +18,6 @@ class Login extends Component {
       msg: '',
       redirectTo: false
     }
-
   }
 
 
@@ -25,15 +27,14 @@ class Login extends Component {
     login: PropTypes.func.isRequired,
   }
 
+
   componentDidUpdate(prevProps) {
     const { error, isAuthenticated } = this.props
-
     if (error !== prevProps.error) {
-      if (error.id === 'REGISTER_FAIL') {
+      if (error.id === 'LOGIN_FAIL') {
         this.setState({ msg: error.msg.msg })
       } else {
         this.setState({ msg: null })
-
       }
     }
     if (!this.state.redirectTo) {
@@ -41,7 +42,6 @@ class Login extends Component {
         this.root()
       }
     }
-
   }
   root = () => {
     this.setState({
@@ -57,7 +57,6 @@ class Login extends Component {
     e.preventDefault()
     const { email, password } = this.state
     const user = { email, password }
-    console.log(user)
     this.props.login(user)
   }
 
@@ -66,6 +65,7 @@ class Login extends Component {
     if (this.state.redirectTo) {
       return <Redirect to="/dashboard" />
     }
+
     return (
       <div className="app flex-row align-items-center">
         <Container>
@@ -73,6 +73,7 @@ class Login extends Component {
             <Col md="8">
               <CardGroup>
                 <Card className="p-4">
+                  {this.state.msg ? <Alert color="danger">{this.state.msg}</Alert> : null}
                   <CardBody>
                     <Form onSubmit={this.onSubmit}>
                       <h1>Login</h1>

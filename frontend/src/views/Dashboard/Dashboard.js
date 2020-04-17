@@ -1,6 +1,5 @@
 import React, { Component, lazy, Suspense } from 'react';
-import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
-import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities'
+
 
 class Dashboard extends Component {
   constructor(props) {

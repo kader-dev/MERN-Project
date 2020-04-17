@@ -20,7 +20,7 @@ router.post('/', department, async (req, res) => {
 router.get('/', async (req, res) => {
     const list_deparmnets = await Department.find({})
     try {
-        res.status(200).send(list_deparmnets)
+        res.status(200).send(res.json(list_deparmnets))
     } catch (e) {
         res.status(400).send(e)
     }

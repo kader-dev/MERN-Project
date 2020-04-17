@@ -10,8 +10,12 @@ export default {
       },
     },
     {
-      name: 'Colors',
-      url: '/theme/colors'
+      name: 'users',
+      url: '/users'
+    },
+    {
+      name: 'deparments',
+      url: '/Department'
     }
   ],
 };

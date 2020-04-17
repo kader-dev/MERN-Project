@@ -27,6 +27,16 @@ class App extends Component {
               <Route exact path="/404" name="Page 404" render={props => <Page404 {...props} />} />
               <Route exact path="/500" name="Page 500" render={props => <Page500 {...props} />} />
               <Route exact path="/dashboard" name="Home" render={props => <DefaultLayout {...props} />} />
+              <Route exact path="/users" name="Home" render={props => <DefaultLayout {...props} />} />
+              <Route exact path="/users/:id" name="Home" render={props => <DefaultLayout {...props} />} />
+              <Route exact path="/Profile" name="Home" render={props => <DefaultLayout {...props} />} />
+              <Route exact path="/Department" name="Department" render={props => <DefaultLayout {...props} />} />
+
+
+
+
+
+
               <Route exact path="/" name="Login Page" render={props => <Login {...props} />} />
             </Switch>
           </React.Suspense>

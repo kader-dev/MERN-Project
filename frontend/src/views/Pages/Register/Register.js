@@ -11,7 +11,8 @@ class Register extends Component {
   constructor() {
     super()
     this.state = {
-      name: '',
+      Fisrt_name: '',
+      Last_name: '',
       email: '',
       password: '',
       re_password: '',
@@ -58,8 +59,11 @@ class Register extends Component {
 
   onSubmit = e => {
     e.preventDefault()
-    const { name, email, password } = this.state
-    const user = { name, email, password }
+    const { First_name, Last_name, email, password, re_password } = this.state
+    if (re_password !== password) {
+      this.setState({ msg: '3awed mp' })
+    }
+    const user = { First_name, Last_name, email, password }
     this.props.register(user)
   }
 
@@ -80,13 +84,22 @@ class Register extends Component {
                   <Form onSubmit={this.onSubmit} >
                     <h1>Register</h1>
                     <p className="text-muted">Create your account</p>
+
                     <InputGroup className="mb-3">
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>
                           <i className="icon-user"></i>
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input type="text" placeholder="name" id="name" name="name" onChange={this.onChange} />
+                      <Input type="text" placeholder="First_name" id="First_name" name="First_name" onChange={this.onChange} />
+                    </InputGroup>
+                    <InputGroup className="mb-3">
+                      <InputGroupAddon addonType="prepend">
+                        <InputGroupText>
+                          <i className="icon-user"></i>
+                        </InputGroupText>
+                      </InputGroupAddon>
+                      <Input type="text" placeholder="Last_name" id="Last_name" name="Last_name" onChange={this.onChange} />
                     </InputGroup>
                     <InputGroup className="mb-3">
                       <InputGroupAddon addonType="prepend">
