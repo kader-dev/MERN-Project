@@ -3,9 +3,9 @@ const User = require('../models/user')
 
 const department = async (req, res, next) => {
     try {
-        const Fisrt_name = req.body.manager
+        const email = req.body.manager
         const user = await User.findOneAndUpdate(
-            { "Fisrt_name": Fisrt_name },
+            { "email": email },
             { $set: { "role": "department_manager" } },
             { returnNewDocument: true })
         try {

@@ -6,14 +6,16 @@ import {
     LOGOUT_SUCCESS,
     REGISTER_FAIL,
     REGISTER_SUCCESS,
-    USER_LOADED
+    USER_LOADED,
+    GET_ALL_USERS
 } from './userTypes'
 
 const initialState = {
     token: localStorage.getItem('token'),
     isAuthenticated: null,
     isLoading: false,
-    user: localStorage.getItem('user')
+    user: null,
+    users: []
 }
 
 
@@ -34,7 +36,6 @@ export default function (state = initialState, action) {
         case LOGIN_SUCCESS:
         case REGISTER_SUCCESS:
             localStorage.setItem('token', action.payload.token);
-            localStorage.setItem('user', JSON.stringify(action.payload.user));
             return {
                 ...state,
                 ...action.payload,
@@ -46,7 +47,6 @@ export default function (state = initialState, action) {
         case REGISTER_FAIL:
         case LOGOUT_SUCCESS:
             localStorage.removeItem('token')
-            localStorage.removeItem('user')
             return {
                 ...state,
                 token: null,
@@ -54,6 +54,11 @@ export default function (state = initialState, action) {
                 user: null,
                 isAuthenticated: false
             };
+        case GET_ALL_USERS:
+            return {
+                ...state,
+                users:action.payload
+            }
         default:
             return state
     }

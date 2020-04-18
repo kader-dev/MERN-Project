@@ -1,70 +1,59 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Badge, Card, CardBody, CardHeader, Col, Row, Table } from 'reactstrap';
-
-import usersData from './UsersData'
-
-function UserRow(props) {
-  const user = props.user
-  const userLink = `/users/${user.id}`
-
-  const getBadge = (status) => {
-    return status === 'Active' ? 'success' :
-      status === 'Inactive' ? 'secondary' :
-        status === 'Pending' ? 'warning' :
-          status === 'Banned' ? 'danger' :
-            'primary'
-  }
-
-  return (
-    <tr key={user.id.toString()}>
-      <th scope="row"><Link to={userLink}>{user.id}</Link></th>
-      <td><Link to={userLink}>{user.name}</Link></td>
-      <td>{user.registered}</td>
-      <td>{user.role}</td>
-      <td><Link to={userLink}><Badge color={getBadge(user.status)}>{user.status}</Badge></Link></td>
-    </tr>
-  )
-}
+import { connect } from "react-redux";
+import PropTypes from 'prop-types'
+import { getAllUsers } from '../../redux/user/userActions'
+import {
+  Table
+} from 'reactstrap'
 
 class Users extends Component {
 
+  static propTypes = {
+    isAuthenticated: PropTypes.bool,
+    getAllUsers: PropTypes.func.isRequired,
+    users: PropTypes.object.isRequired
+  }
+
+  componentDidMount() {
+    this.props.getAllUsers()
+  }
+
+
+  onDeleteClick = id => {
+    this.props.deleteItem(id)
+  }
   render() {
-
-    const userList = usersData.filter((user) => user.id < 10)
-
+    const { users } = this.props.users
     return (
-      <div className="animated fadeIn">
-        <Row>
-          <Col xl={6}>
-            <Card>
-              <CardHeader>
-                <i className="fa fa-align-justify"></i> Users <small className="text-muted">example</small>
-              </CardHeader>
-              <CardBody>
-                <Table responsive hover>
-                  <thead>
-                    <tr>
-                      <th scope="col">id</th>
-                      <th scope="col">name</th>
-                      <th scope="col">registered</th>
-                      <th scope="col">role</th>
-                      <th scope="col">status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {userList.map((user, index) =>
-                      <UserRow key={index} user={user}/>
-                    )}
-                  </tbody>
-                </Table>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-      </div>
+      <Table Username >
+        <thead>
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Role</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((user =>
+            <tr>
+              <td>{user.First_name}</td>
+              <td>{user.Last_name}</td>
+              <td>{user.email}</td>
+              <td>{user.role}</td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
     )
   }
 }
 
-export default Users;
+
+
+const mapStateToProps = state => ({
+  users: state.user,
+})
+
+
+export default connect(mapStateToProps, { getAllUsers })(Users) 

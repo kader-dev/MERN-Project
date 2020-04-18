@@ -1,46 +1,70 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { Col, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+
+import { Col, Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { connect } from 'react-redux'
+import PropTypes from 'prop-types';
 
 
 
 
+class Profile extends Component {
+    constructor() {
+        super()
+        this.state = {
+
+        }
+    }
+
+    static propTypes = {
+        user: PropTypes.object.isRequired,
+    }
 
 
-const Profile = () => {
-    const { First_name, email, role, Last_name } = JSON.parse(localStorage.getItem('user'))
-    return (
-        <Form>
-            <FormGroup row>
-                <Label for="exampleEmail" sm={2}>Email</Label>
-                <Col sm={10}>
-                    <Input disabled type="email" name="email" id="exampleEmail" placeholder="with a placeholder" value={email} />
-                </Col>
-            </FormGroup>
-            <FormGroup row>
-                <Label for="examplePassword" sm={2}>First_name</Label>
-                <Col sm={10}>
-                    <Input disabled type="text" name="password" id="examplePassword" placeholder="password placeholder" value={First_name} />
-                </Col>
-            </FormGroup>
+    render() {
 
-            <FormGroup row>
-                <Label for="examplePassword" sm={2}>Last_name</Label>
-                <Col sm={10}>
-                    <Input disabled type="text" name="password" id="examplePassword" placeholder="password placeholder" value={Last_name} />
-                </Col>
-            </FormGroup>
+        const { user } = this.props.user
+        return (
+            <Form>
+                <FormGroup row>
+                    <Label for="exampleEmail" sm={2}>Email</Label>
+                    <Col sm={10}>
+                        <Input disabled type="email" name="email" id="exampleEmail"
+                            placeholder="with a placeholder" value={user.email} />
+                    </Col>
+                </FormGroup>
+                <FormGroup row>
+                    <Label for="examplePassword" sm={2}>First_name</Label>
+                    <Col sm={10}>
+                        <Input disabled type="text" name="password" id="examplePassword"
+                            placeholder="password placeholder" value={user.First_name} />
+                    </Col>
+                </FormGroup>
 
-            <FormGroup row>
-                <Label for="examplePassword" sm={2}>role</Label>
-                <Col sm={10}>
-                    <Input disabled type="text" name="password" id="examplePassword" placeholder="password placeholder" value={role} />
-                </Col>
-            </FormGroup>
+                <FormGroup row>
+                    <Label for="examplePassword" sm={2}>Last_name</Label>
+                    <Col sm={10}>
+                        <Input disabled type="text" name="password" id="examplePassword"
+                            placeholder="password placeholder" value={user.Last_name} />
+                    </Col>
+                </FormGroup>
 
-        </Form>
-    )
+                <FormGroup row>
+                    <Label for="examplePassword" sm={2}>role</Label>
+                    <Col sm={10}>
+                        <Input disabled type="text" name="password" id="examplePassword"
+                            placeholder="password placeholder" value={user.role} />
+                    </Col>
+                </FormGroup>
+
+            </Form>
+        )
+    }
 }
+const mapStateToProps = state => ({
+    user: state.user
+})
 
 
-export default Profile;
+
+
+export default connect(mapStateToProps, null)(Profile);

@@ -1,4 +1,4 @@
-import { GET_DEPARTMENTS, DEPARTMENTS_LOADING } from './departmentTypes'
+import { GET_DEPARTMENTS, DEPARTMENTS_LOADING, ADD_DEPARTMENTS } from './departmentTypes'
 
 const initialState = {
     departments: [],
@@ -8,12 +8,16 @@ const initialState = {
 export default function (state = initialState, action) {
     switch (action.type) {
         case GET_DEPARTMENTS:
-            localStorage.setItem('items', JSON.stringify(action.payload))
             return {
                 ...state,
                 departments: action.payload,
                 loading: false
             };
+        case ADD_DEPARTMENTS:
+            return {
+                ...state,
+                departments: [action.payload, ...state.departments]
+            }
         case DEPARTMENTS_LOADING:
             return {
                 ...state,

@@ -28,6 +28,7 @@ class Login extends Component {
   }
 
 
+
   componentDidUpdate(prevProps) {
     const { error, isAuthenticated } = this.props
     if (error !== prevProps.error) {

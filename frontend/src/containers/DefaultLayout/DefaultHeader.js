@@ -3,13 +3,12 @@ import { Link, NavLink } from 'react-router-dom';
 import { Badge, UncontrolledDropdown, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
-import { AppAsideToggler, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
+import { AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
 import logo from '../../assets/img/brand/logo.svg'
 import sygnet from '../../assets/img/brand/sygnet.svg'
 import { logout } from '../../redux/user/userActions'
 import { Redirect } from 'react-router-dom'
-import { selectuser } from '../../redux/user/userSelectors'
-import { createStructuredSelector } from 'reselect';
+
 class DefaultHeader extends Component {
   constructor() {
     super()
@@ -35,7 +34,7 @@ class DefaultHeader extends Component {
     if (this.state.redirectTo) {
       return <Redirect to="/" />
     }
-    const { First_name, Last_name } = JSON.parse(localStorage.getItem('user'))
+    const { user } = this.props.user
     return (
       <React.Fragment>
         <AppSidebarToggler className="d-lg-none" display="md" mobile />
@@ -49,7 +48,9 @@ class DefaultHeader extends Component {
             <NavLink to="/dashboard" className="nav-link" >Dashboard</NavLink>
           </NavItem>
         </Nav>
-        <strong>Welcome {Last_name}  {First_name}</strong>
+        <span className='navbar-text mr-3'>
+          <strong>{user ? `Welcome ${user.First_name}` : ''}</strong>
+        </span>
         <Nav className="ml-auto" navbar>
           <NavItem className="d-md-down-none">
             <NavLink to="#" className="nav-link"><i className="icon-bell"></i><Badge pill color="danger">5</Badge></NavLink>
@@ -64,7 +65,6 @@ class DefaultHeader extends Component {
               <DropdownItem ><i className="fa fa-bell-o"></i> Updates<Badge color="info">42</Badge></DropdownItem>
               <DropdownItem header tag="div" className="text-center"><strong>Settings</strong></DropdownItem>
               <DropdownItem ><i className="fa fa-user"></i><Link to="/Profile">Profile</Link></DropdownItem>
-              <DropdownItem divider />
               <DropdownItem onClick={this.onSubmit}><i className="fa fa-lock"></i> Logout</DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
@@ -74,6 +74,8 @@ class DefaultHeader extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  user: state.user
+})
 
-
-export default connect(null, { logout })(DefaultHeader);
+export default connect(mapStateToProps, { logout })(DefaultHeader);

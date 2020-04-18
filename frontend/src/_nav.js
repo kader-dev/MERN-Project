@@ -10,11 +10,11 @@ export default {
       },
     },
     {
-      name: 'users',
+      name: 'Users',
       url: '/users'
     },
     {
-      name: 'deparments',
+      name: 'Departments',
       url: '/Department'
     }
   ],
