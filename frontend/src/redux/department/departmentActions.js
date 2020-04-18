@@ -1,7 +1,13 @@
 import axios from "axios";
-import { GET_DEPARTMENTS, DEPARTMENTS_LOADING, ADD_DEPARTMENTS } from './departmentTypes'
+import {
+    GET_DEPARTMENTS,
+    DEPARTMENTS_LOADING,
+    ADD_DEPARTMENTS,
+    DELETE_DEPARTMENTS,
+    UPDATE_DEPARTMENTS
+} from './departmentTypes'
 import { returnErrors } from '../error/errorActions'
-import Department from "../../views/Departments/Department";
+
 
 export const getDepartments = () => dispatch => {
     dispatch(setDepartmentsLoading());
@@ -18,8 +24,7 @@ export const getDepartments = () => dispatch => {
 }
 
 
-export const addDepartment = department => dispatch => {
-
+export const addDepartment = (department) => dispatch => {
     axios.post('http://localhost:4000/department', department)
         .then(
             res => dispatch({
@@ -32,6 +37,32 @@ export const addDepartment = department => dispatch => {
         )
 }
 
+export const updateDepartment = ({ id, name, manager, description }) => dispatch => {
+    axios.patch(`http://localhost:4000/department/${id}`, ({ name, manager, description }))
+        .then(
+            res => dispatch({
+                type: UPDATE_DEPARTMENTS,
+                payload: res.data
+            })
+        ).then(console.log({ name, manager, description }))
+        .catch(e =>
+            dispatch(returnErrors(e.response.data, e.response.status))
+        )
+}
+
+export const deleteDepartment = id => dispatch => {
+    dispatch(setDepartmentsLoading());
+    axios.delete(`http://localhost:4000/department/${id}`)
+        .then(
+            res => dispatch({
+                type: DELETE_DEPARTMENTS,
+                payload: id
+            })
+        )
+        .catch(e =>
+            dispatch(returnErrors(e.response.data, e.response.status))
+        )
+}
 
 export const setDepartmentsLoading = () => {
     return {

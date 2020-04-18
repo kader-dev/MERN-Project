@@ -13,7 +13,6 @@ class Users extends Component {
     getAllUsers: PropTypes.func.isRequired,
     users: PropTypes.object.isRequired
   }
-
   componentDidMount() {
     this.props.getAllUsers()
   }

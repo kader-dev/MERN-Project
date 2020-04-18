@@ -15,8 +15,8 @@ const Page404 = React.lazy(() => import('./views/Pages/Page404'));
 const Page500 = React.lazy(() => import('./views/Pages/Page500'));
 
 class App extends Component {
-  
- 
+
+
   render() {
     return (
 
@@ -32,9 +32,8 @@ class App extends Component {
               <Route exact path="/users/:id" name="Home" render={props => <DefaultLayout {...props} />} />
               <Route exact path="/Profile" name="Home" render={props => <DefaultLayout {...props} />} />
               <Route exact path="/Department" name="Department" render={props => <DefaultLayout {...props} />} />
-
-
-
+              <Route exact path="/Department/New" name="New" render={props => <DefaultLayout {...props} />} />
+              <Route exact path="/Department/:id" name="New" render={props => <DefaultLayout {...props} />} />
 
 
 

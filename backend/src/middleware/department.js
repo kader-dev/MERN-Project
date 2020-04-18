@@ -18,7 +18,7 @@ const department = async (req, res, next) => {
         req.body.manager = user
         next()
     } catch (e) {
-        res.status(401).send({ error: 'please authenticate' })
+        res.status(401).send(e)
     }
 }
 

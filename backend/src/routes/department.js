@@ -25,8 +25,17 @@ router.get('/', async (req, res) => {
         res.status(400).send(e)
     }
 })
+//get by id
+router.get('/:id', async (req, res) => {
+    const department = await Department.find({ "_id": req.params.id })
+    try {
+        res.status(200).send(res.json(department))
+    } catch (e) {
+        res.status(400).send(e)
+    }
+})
 //get  department by user
-router.get('/my', auth, async (req, res) => {
+router.get('/depert/my', auth, async (req, res) => {
     const list_deparmnets = await Department.find({ "manager": req.user.id })
     try {
         res.status(200).send(list_deparmnets)
@@ -34,6 +43,7 @@ router.get('/my', auth, async (req, res) => {
         res.status(400).send(e)
     }
 })
+
 //delete department
 router.delete('/:id', async (req, res) => {
     try {

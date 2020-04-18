@@ -37,7 +37,8 @@ const Users = React.lazy(() => import('./views/Users/Users'));
 const User = React.lazy(() => import('./views/Users/User'));
 const Profile = React.lazy(() => import('./views/Users/Profile'));
 const Department = React.lazy(() => import('./views/Departments/Department'));
-
+const Details = React.lazy(() => import('./views/Departments/Details'));
+const NewDepartment = React.lazy(() => import('./views/Departments/NewDepartment'));
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: '/dashboard', name: 'Home', component: Dashboard },
@@ -85,6 +86,8 @@ const routes = [
   { path: '/users/:id', exact: true, name: 'User Details', component: User },
   { path: '/Profile', exact: true, name: 'Profile', component: Profile },
   { path: '/Department', exact: true, name: 'Department', component: Department },
+  { path: '/Department/New', exact: true, name: 'NewDepartment', component: NewDepartment },
+  { path: '/Department/:id', exact: true, name: 'Details', component: Details },
 ];
 
 export default routes;
