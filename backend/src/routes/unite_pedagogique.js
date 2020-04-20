@@ -17,7 +17,7 @@ router.post('/', up, async (req, res) => {
         await up.save()
         res.status(200).send(up)
     } catch (e) {
-        res.status(400).send(e)
+        res.status(400).send(e.message)
     }
 
 
@@ -37,7 +37,7 @@ router.get('/', async (req, res) => {
     try {
         res.status(200).send(list_unités_pédagogique)
     } catch (e) {
-        res.status(400).send(e)
+        res.status(400).send(e.message)
     }
 })
 
@@ -48,7 +48,7 @@ router.get('/my', up, async (req, res) => {
     try {
         res.status(200).send(list_unités_pédagogique)
     } catch (e) {
-        res.status(400).send(e)
+        res.status(400).send(e.message)
     }
 })
 
@@ -61,7 +61,7 @@ router.delete('/:id', async (req, res) => {
         }
         res.send(up)
     } catch (e) {
-        res.status(500).send(e)
+        res.status(500).send(e.message)
     }
 })
 
@@ -84,7 +84,7 @@ router.patch('/:id', async (req, res) => {
         await up.save()
         res.send(up)
     } catch (e) {
-        res.status(500).send(e)
+        res.status(500).send(e.message)
     }
 })
 

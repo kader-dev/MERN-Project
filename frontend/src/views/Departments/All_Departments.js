@@ -13,7 +13,7 @@ import {
 
 
 
-class Department extends Component {
+class All_Departments extends Component {
 
     constructor(props) {
         super(props);
@@ -31,7 +31,8 @@ class Department extends Component {
         addDepartment: PropTypes.func.isRequired,
         deleteDepartment: PropTypes.func.isRequired,
         getAllUsers: PropTypes.func.isRequired,
-        users: PropTypes.object.isRequired
+        users: PropTypes.object.isRequired,
+        add: PropTypes.bool,
     }
 
     componentDidMount() {
@@ -43,29 +44,14 @@ class Department extends Component {
         this.props.deleteDepartment(id)
     }
 
-    togglePrimary = () => {
-        this.setState({
-            primary: !this.state.primary,
-        });
-    }
     onChange = (e) => {
         this.setState({ [e.target.name]: e.target.value })
     }
     onUpdate = (id) => {
-        this.props.history.push(`/Department/${id}`)
+        this.props.history.push(`/All_Departments/${id}`)
     }
     New = () => {
-        this.props.history.push('/Department/New')
-    }
-    onSubmit = e => {
-        e.preventDefault()
-        const department = {
-            name: this.state.name,
-            description: this.state.description,
-            manager: this.state.manager,
-        }
-        this.props.addDepartment(department)
-        this.togglePrimary()
+        this.props.history.push('/All_Departments/New')
     }
 
     render() {
@@ -74,56 +60,8 @@ class Department extends Component {
         return (
             <Fragment>
                 <Button color="primary" onClick={this.New} className="mr-1">Add Department</Button>
-                <Modal isOpen={this.state.primary} toggle={this.togglePrimary}
-                    className={'modal-primary ' + this.props.className} >
-                    <ModalHeader toggle={this.togglePrimary}>New Department</ModalHeader>
-                    <ModalBody>
-                        <Form onSubmit={this.onSubmit}>
-                            <FormGroup>
-                                <Label for="item">Name</Label>
-                                <Input
-                                    type="text"
-                                    name="name"
-                                    id="item"
-                                    placeholder="enter name"
-                                    onChange={this.onChange}
-                                />
-                                <Label for="item">Description</Label>
-                                <Input
-                                    type="textarea"
-                                    name="description"
-                                    id="description"
-                                    placeholder="enter description"
-                                    onChange={this.onChange}
-                                />
-                                <FormGroup>
-                                    <Label htmlFor="ccmonth">Manager</Label>
-                                    <Input onChange={this.onChange}
-                                        type="select"
-                                        name="manager"
-                                        id="manager"
-                                    >
-
-                                        {users.map((u =>
-                                            <option>
-                                                {u.email}
-                                            </option>))}
-                                    </Input>
-                                </FormGroup>
-                                <Button
-                                    color="dark"
-                                    style={{ marginTop: '2rem' }}
-                                    block
-                                >
-                                    ADD Department
-                                </Button>
-                            </FormGroup>
-                        </Form>
-                    </ModalBody>
-                </Modal>
                 <hr />
                 <Row>
-
                     <Col>
                         <Card body outline color="warning">
                             <Table Simple    >
@@ -162,11 +100,7 @@ class Department extends Component {
                         </Card>
                     </Col>
                 </Row>
-
-            </Fragment>
-
-
-
+            </Fragment >
         )
     }
 }
@@ -176,7 +110,8 @@ class Department extends Component {
 const mapStateToProps = state => ({
     departments: state.department,
     users: state.user,
+    add: state.department.add,
 })
 
 
-export default connect(mapStateToProps, { getDepartments, getAllUsers, addDepartment, deleteDepartment })(Department) 
+export default connect(mapStateToProps, { getDepartments, getAllUsers, addDepartment, deleteDepartment })(All_Departments) 

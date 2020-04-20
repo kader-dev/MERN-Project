@@ -2,9 +2,12 @@ import axios from "axios";
 import {
     GET_DEPARTMENTS,
     DEPARTMENTS_LOADING,
-    ADD_DEPARTMENTS,
-    DELETE_DEPARTMENTS,
-    UPDATE_DEPARTMENTS
+    ADD_DEPARTMENT,
+    DELETE_DEPARTMENT,
+    UPDATE_DEPARTMENT,
+    DELETE_DEPARTMENT_FAIL,
+    ADD_DEPARTMENT_FAIL,
+    UPDATE_DEPARTMENT_FAIL
 } from './departmentTypes'
 import { returnErrors } from '../error/errorActions'
 
@@ -24,30 +27,37 @@ export const getDepartments = () => dispatch => {
 }
 
 
+
 export const addDepartment = (department) => dispatch => {
     axios.post('http://localhost:4000/department', department)
         .then(
             res => dispatch({
-                type: ADD_DEPARTMENTS,
+                type: ADD_DEPARTMENT,
                 payload: res.data
             })
         )
-        .catch(e =>
-            dispatch(returnErrors(e.response.data, e.response.status))
-        )
+        .catch(e => {
+            dispatch(returnErrors(e.response.data, e.response.status, 'ADD_DEPARTMENT_FAIL'));
+            dispatch({
+                type: ADD_DEPARTMENT_FAIL
+            })
+        })
 }
 
 export const updateDepartment = ({ id, name, manager, description }) => dispatch => {
     axios.patch(`http://localhost:4000/department/${id}`, ({ name, manager, description }))
         .then(
             res => dispatch({
-                type: UPDATE_DEPARTMENTS,
+                type: UPDATE_DEPARTMENT,
                 payload: res.data
             })
-        ).then(console.log({ name, manager, description }))
-        .catch(e =>
-            dispatch(returnErrors(e.response.data, e.response.status))
         )
+        .catch(e => {
+            dispatch(returnErrors(e.response.data, e.response.status, 'ADD_DEPARTMENT_FAIL'));
+            dispatch({
+                type: UPDATE_DEPARTMENT_FAIL
+            })
+        })
 }
 
 export const deleteDepartment = id => dispatch => {
@@ -55,14 +65,18 @@ export const deleteDepartment = id => dispatch => {
     axios.delete(`http://localhost:4000/department/${id}`)
         .then(
             res => dispatch({
-                type: DELETE_DEPARTMENTS,
+                type: DELETE_DEPARTMENT,
                 payload: id
             })
         )
-        .catch(e =>
-            dispatch(returnErrors(e.response.data, e.response.status))
-        )
+        .catch(e => {
+            dispatch(returnErrors(e.response.data, e.response.status, 'ADD_DEPARTMENT_FAIL'));
+            dispatch({
+                type: DELETE_DEPARTMENT_FAIL
+            })
+        })
 }
+
 
 export const setDepartmentsLoading = () => {
     return {

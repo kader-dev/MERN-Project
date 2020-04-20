@@ -6,12 +6,12 @@ import {
 import PropTypes from 'prop-types'
 import { connect } from "react-redux";
 import { register } from '../../../redux/user/userActions'
-import { Redirect } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 class Register extends Component {
   constructor() {
     super()
     this.state = {
-      Fisrt_name: '',
+      First_name: '',
       Last_name: '',
       email: '',
       password: '',
@@ -31,13 +31,11 @@ class Register extends Component {
 
   componentDidUpdate(prevProps) {
     const { error, isAuthenticated } = this.props
-
     if (error !== prevProps.error) {
       if (error.id === 'REGISTER_FAIL') {
-        this.setState({ msg: error.msg.msg })
+        this.setState({ msg: error.message })
       } else {
         this.setState({ msg: null })
-
       }
     }
     if (!this.state.redirectTo) {
@@ -45,7 +43,6 @@ class Register extends Component {
         this.root()
       }
     }
-
   }
   root = () => {
     this.setState({
@@ -59,12 +56,14 @@ class Register extends Component {
 
   onSubmit = e => {
     e.preventDefault()
-    const { First_name, Last_name, email, password, re_password } = this.state
-    if (re_password !== password) {
-      this.setState({ msg: '3awed mp' })
+    if (this.state.password !== this.state.re_password) {
+      this.setState({ msg: "please repeat your password" })
     }
-    const user = { First_name, Last_name, email, password }
-    this.props.register(user)
+    else {
+      const { First_name, Last_name, email, password } = this.state
+      const user = { First_name, Last_name, email, password }
+      this.props.register(user)
+    }
   }
 
   render() {
@@ -121,10 +120,11 @@ class Register extends Component {
                           <i className="icon-lock"></i>
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input type="password" placeholder="Repeat password" autoComplete="new-password" />
+                      <Input type="password" placeholder="Repeat password" id="re_password" name="re_password" onChange={this.onChange} />
                     </InputGroup>
-                    <Button color="success" block>Create Account</Button>
+                    <Button color="success" block>Create Account</Button><hr></hr>
                   </Form>
+                  <Button color="red" block><Link to='/'>I already have  Account</Link></Button>
                 </CardBody>
                 <CardFooter className="p-4">
                   <Row>

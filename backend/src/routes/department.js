@@ -13,7 +13,7 @@ router.post('/', department, async (req, res) => {
         await deparment.save()
         res.status(200).send(deparment)
     } catch (e) {
-        res.status(400).send(e)
+        res.status(400).send(e.message)
     }
 })
 //get all departments
@@ -22,7 +22,7 @@ router.get('/', async (req, res) => {
     try {
         res.status(200).send(res.json(list_deparmnets))
     } catch (e) {
-        res.status(400).send(e)
+        res.status(400).send(e.message)
     }
 })
 //get by id
@@ -31,7 +31,7 @@ router.get('/:id', async (req, res) => {
     try {
         res.status(200).send(res.json(department))
     } catch (e) {
-        res.status(400).send(e)
+        res.status(400).send(e.message)
     }
 })
 //get  department by user
@@ -40,7 +40,7 @@ router.get('/depert/my', auth, async (req, res) => {
     try {
         res.status(200).send(list_deparmnets)
     } catch (e) {
-        res.status(400).send(e)
+        res.status(400).send(e.message)
     }
 })
 
@@ -53,7 +53,7 @@ router.delete('/:id', async (req, res) => {
         }
         res.send(deparment)
     } catch (e) {
-        res.status(500).send(e)
+        res.status(500).send(e.message)
     }
 })
 
@@ -75,7 +75,7 @@ router.patch('/:id', department, async (req, res) => {
         await deparment.save()
         res.send(deparment)
     } catch (e) {
-        res.status(500).send(e)
+        res.status(500).send(e.message)
     }
 
 })

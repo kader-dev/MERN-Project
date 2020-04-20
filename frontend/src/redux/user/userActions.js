@@ -13,13 +13,13 @@ import {
 import { returnErrors } from '../error/errorActions'
 import store from '../store'
 
-export const register = ({ Fisrt_name, Last_name, email, password }) => dispatch => {
+export const register = ({ First_name, Last_name, email, password }) => dispatch => {
     const config = {
         headers: {
             "Content-type": "application/json"
         }
     }
-    const body = JSON.stringify({ Fisrt_name, Last_name, email, password })
+    const body = JSON.stringify({ First_name, Last_name, email, password })
     axios.post('http://localhost:4000/users', body, config)
         .then(res => dispatch({
             type: REGISTER_SUCCESS,

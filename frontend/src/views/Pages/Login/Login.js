@@ -33,7 +33,7 @@ class Login extends Component {
     const { error, isAuthenticated } = this.props
     if (error !== prevProps.error) {
       if (error.id === 'LOGIN_FAIL') {
-        this.setState({ msg: error.msg.msg })
+        this.setState({ msg: error.message })
       } else {
         this.setState({ msg: null })
       }

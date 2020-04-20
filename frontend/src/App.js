@@ -31,9 +31,9 @@ class App extends Component {
               <Route exact path="/users" name="Home" render={props => <DefaultLayout {...props} />} />
               <Route exact path="/users/:id" name="Home" render={props => <DefaultLayout {...props} />} />
               <Route exact path="/Profile" name="Home" render={props => <DefaultLayout {...props} />} />
-              <Route exact path="/Department" name="Department" render={props => <DefaultLayout {...props} />} />
-              <Route exact path="/Department/New" name="New" render={props => <DefaultLayout {...props} />} />
-              <Route exact path="/Department/:id" name="New" render={props => <DefaultLayout {...props} />} />
+              <Route exact path="/All_Departments" name="All_Departments" render={props => <DefaultLayout {...props} />} />
+              <Route exact path="/All_Departments/New" name="New" render={props => <DefaultLayout {...props} />} />
+              <Route exact path="/All_Departments/:id" name="New" render={props => <DefaultLayout {...props} />} />
 
 
 

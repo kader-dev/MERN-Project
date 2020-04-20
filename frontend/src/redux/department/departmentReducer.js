@@ -1,14 +1,18 @@
 import {
     GET_DEPARTMENTS,
     DEPARTMENTS_LOADING,
-    ADD_DEPARTMENTS,
-    DELETE_DEPARTMENTS,
-    UPDATE_DEPARTMENTS
+    ADD_DEPARTMENT,
+    DELETE_DEPARTMENT,
+    UPDATE_DEPARTMENT,
+    DELETE_DEPARTMENT_FAIL,
+    ADD_DEPARTMENT_FAIL,
+    UPDATE_DEPARTMENT_FAIL
 } from './departmentTypes'
 
 const initialState = {
     departments: [],
-    loading: false
+    loading: false,
+    add: null
 }
 
 export default function (state = initialState, action) {
@@ -17,19 +21,21 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 departments: action.payload,
-                loading: false
+                loading: false,
+                add: null
             };
-        case ADD_DEPARTMENTS:
+        case ADD_DEPARTMENT:
             return {
                 ...state,
-                departments: [action.payload, ...state.departments]
+                departments: [action.payload, ...state.departments],
+                add: true
             }
-        case DELETE_DEPARTMENTS:
+        case DELETE_DEPARTMENT:
             return {
                 ...state,
                 departments: state.departments.filter(dep => dep._id !== action.payload)
             }
-        case UPDATE_DEPARTMENTS:
+        case UPDATE_DEPARTMENT:
             return {
                 ...state,
                 departments: [action.payload, ...state.departments]
@@ -37,8 +43,15 @@ export default function (state = initialState, action) {
         case DEPARTMENTS_LOADING:
             return {
                 ...state,
-                loading: true
+                loading: true,
+                add: null
             };
+        case UPDATE_DEPARTMENT_FAIL:
+        case DELETE_DEPARTMENT_FAIL:
+        case ADD_DEPARTMENT_FAIL:
+            return {
+                ...state
+            }
         default:
             return state
     }

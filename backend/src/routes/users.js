@@ -27,7 +27,7 @@ router.post('/', upload.single("file"), async (req, res) => {
     const token = await user.generateAuthToekn()
     res.status(201).send({ user, token })
   } catch (e) {
-    res.status(400).send({ msg: 'please enter all fields' })
+    res.status(400).send(e.message)
   }
 })
 
@@ -37,7 +37,7 @@ router.get('/all', auth, async (req, res) => {
     const users = await User.find({})
     res.status(201).send(users)
   }
-  catch (e) { res.status(400).send(e) }
+  catch (e) { res.status(400).send(e.message) }
 })
 
 //get user by id
@@ -48,7 +48,7 @@ router.get('/:id', async (req, res) => {
     res.status(200).send(user)
   }
   catch (e) {
-    res.status(404).send(e)
+    res.status(404).send(e.message)
   }
 })
 
@@ -60,7 +60,7 @@ router.delete('/:id', async (req, res) => {
     res.status(200).send(" succes delete")
   }
   catch (e) {
-    res.status(500).send(e)
+    res.status(500).send(e.message)
   }
 })
 
@@ -84,7 +84,7 @@ router.patch('/:id', async (req, res) => {
     res.send(user)
   }
   catch (e) {
-    res.status(400).send(e)
+    res.status(400).send(e.message)
   }
 })
 
@@ -95,7 +95,7 @@ router.post('/login', async (req, res) => {
     const token = await user.generateAuthToekn()
     res.send({ user, token })
   } catch (e) {
-    res.status(400).send({ msg: 'please enter all fields' })
+    res.status(400).send(e.message)
   }
 })
 
@@ -104,7 +104,7 @@ router.get('/user/profile', auth, async (req, res) => {
   try {
     res.status(201).send(req.user)
   }
-  catch (e) { res.status(400).send(e) }
+  catch (e) { res.status(400).send(e.message) }
 })
 
 //logout
@@ -117,7 +117,7 @@ router.post('/logout', auth, async (req, res) => {
     await req.user.save()
     res.send('logout')
   } catch (e) {
-    res.status(500).send()
+    res.status(500).send(e.message)
   }
 })
 
@@ -129,7 +129,7 @@ router.post('/logoutAll', auth, async (req, res) => {
     await req.user.save()
     res.send('logoutAll')
   } catch (e) {
-    res.status(500).send()
+    res.status(500).send(e.message)
   }
 })
 

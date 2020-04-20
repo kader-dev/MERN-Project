@@ -13,12 +13,12 @@ const department = async (req, res, next) => {
         } catch (e) {
         }
         if (!user) {
-            throw new Error()
+            res.status(401).send("user not found")
         }
         req.body.manager = user
         next()
     } catch (e) {
-        res.status(401).send(e)
+        res.status(401).send(e.message)
     }
 }
 
