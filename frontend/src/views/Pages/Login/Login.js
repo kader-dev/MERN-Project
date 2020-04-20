@@ -51,6 +51,7 @@ class Login extends Component {
   }
 
   onChange = (e) => {
+    this.setState({ msg: null })
     this.setState({ [e.target.name]: e.target.value })
   }
 

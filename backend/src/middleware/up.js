@@ -7,10 +7,12 @@ const up = async (req, res, next) => {
         const token = req.header('Authorization').replace('Bearer ', '')
         const decoded = jwt.verify(token, 'thisismyapp')
         const user = await User.findOne({ _id: decoded._id, 'tokens.token': token })
+        console.log(user)
         const dep = await Department.findOne({ "manager": user._id })
-        const Fisrt_name = req.body.manager
+        console.log(dep)
+        const email = req.body.manager
         const manager = await User.findOneAndUpdate(
-            { "Fisrt_name": Fisrt_name },
+            { "email": email },
             { $set: { "role": "up_manager" } },
             { returnNewDocument: true })
         try {
@@ -18,7 +20,7 @@ const up = async (req, res, next) => {
         } catch (e) {
         }
         if (!user) {
-            throw new Error()
+            res.status(401).send('user not found')
         }
         req.token = token
         req.user = user
@@ -27,7 +29,7 @@ const up = async (req, res, next) => {
 
         next()
     } catch (e) {
-        res.status(401).send({ error: 'please authenticate' })
+        res.status(401).send(e.message)
     }
 }
 

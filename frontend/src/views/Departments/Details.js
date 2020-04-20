@@ -36,7 +36,7 @@ class Details extends Component {
                 this.setState({ description: res.data[0].description })
                 this.setState({ manager: res.data[0].manager })
             }
-            ).then(res => console.log(this.state.name, this.state.description, this.state.manager))
+            )
     }
 
     onChange = (e) => {
@@ -80,9 +80,10 @@ class Details extends Component {
                         <Label htmlFor="ccmonth">Manager</Label>
                         <Input onChange={this.onChange}
                             type="select"
+                            name="manager"
                             id="manager"
                         >
-
+                            <option placeholder="enter manager">enter manager</option>
                             {users.map((u =>
                                 <option>
                                     {u.email}

@@ -16,6 +16,10 @@ export default {
     {
       name: 'Departments',
       url: '/All_Departments'
+    },
+    {
+      name: 'Unites',
+      url: '/All_Unites'
     }
   ],
 };

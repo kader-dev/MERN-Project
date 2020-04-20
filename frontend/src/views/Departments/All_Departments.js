@@ -5,10 +5,8 @@ import { getDepartments, addDepartment, deleteDepartment } from '../../redux/dep
 import { getAllUsers } from '../../redux/user/userActions'
 import {
     Card, Row,
-    CardBody,
-    Col, CardHeader, Button,
-    Modal, ModalBody, ModalHeader,
-    FormGroup, Input, Label, Form, Table
+    Col, Button,
+    Table
 } from 'reactstrap'
 
 
@@ -20,11 +18,9 @@ class All_Departments extends Component {
         this.state = {
             modal: false,
             primary: false,
-            description: '',
-            name: '',
-            manager: ''
         };
     }
+    
     static propTypes = {
         getDepartments: PropTypes.func.isRequired,
         departments: PropTypes.object.isRequired,

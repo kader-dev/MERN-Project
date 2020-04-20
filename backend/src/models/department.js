@@ -33,6 +33,12 @@ DepartmentSchema.virtual('unite_pedagogiques', {
     foreignField: 'Department'
 })
 
+DepartmentSchema.pre('remove', async function (next) {
+    const department = this
+    await unite_pedagogique.deleteMany({ Department: department._id })
+    next()
+})
+
 const Department = mongoose.model('Department', DepartmentSchema)
 
 module.exports = Department

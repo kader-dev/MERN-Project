@@ -9,7 +9,6 @@ const User = require('../models/user')
 
 //add up
 router.post('/', up, async (req, res) => {
-
     const up = new unité_pédagogique({
         ...req.body
     })
@@ -19,15 +18,11 @@ router.post('/', up, async (req, res) => {
     } catch (e) {
         res.status(400).send(e.message)
     }
-
-
     const dep = await Department.findOneAndUpdate(
         { "_id": req.body.Department._id },
         { $push: { "list_up": up } },
         { returnNewDocument: true })
     dep.save()
-    console.log(dep)
-
 }
 )
 
@@ -36,6 +31,25 @@ router.get('/', async (req, res) => {
     const list_unités_pédagogique = await unité_pédagogique.find({})
     try {
         res.status(200).send(list_unités_pédagogique)
+    } catch (e) {
+        res.status(400).send(e.message)
+    }
+})
+
+//dep by unites
+router.get('/test', async (req, res) => {
+    const liste = await unité_pédagogique.aggregate([{ $group: { _id: "$Department", uni: { $push: "$name" } } }])
+    try {
+        res.status(200).send(
+            res.json(
+                liste.map(
+                    (u => u
+
+                    )
+                )
+
+            )
+        )
     } catch (e) {
         res.status(400).send(e.message)
     }

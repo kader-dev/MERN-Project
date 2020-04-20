@@ -49,7 +49,7 @@ class DefaultHeader extends Component {
           </NavItem>
         </Nav>
         <span className='navbar-text mr-3'>
-          <strong>{user ? `Welcome ${user.First_name}` : ''}</strong>
+          <strong>{user ? `Welcome ${user.First_name} ${user.Last_name}` : ''}</strong>
         </span>
         <Nav className="ml-auto" navbar>
           <NavItem className="d-md-down-none">

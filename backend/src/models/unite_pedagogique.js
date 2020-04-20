@@ -13,6 +13,7 @@ const unite_pedagogique_Schema = new mongoose.Schema({
     },
     Department: {
         type: mongoose.Schema.Types.ObjectId,
+        required: true,
         ref: 'Department'
     },
     manager: {

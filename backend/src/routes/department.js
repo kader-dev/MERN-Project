@@ -1,6 +1,7 @@
 const express = require('express')
 const Department = require('../models/department')
 const department = require('../middleware/department')
+const depdel = require('../middleware/depdel')
 const auth = require('../middleware/auth')
 const router = new express.Router()
 const User = require('../models/user')
@@ -45,13 +46,10 @@ router.get('/depert/my', auth, async (req, res) => {
 })
 
 //delete department
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', depdel, async (req, res) => {
     try {
-        const deparment = await Department.findOneAndDelete(req.params.id)
-        if (!deparment) {
-            return res.status(404).send("deparment not found")
-        }
-        res.send(deparment)
+        await req.department.remove()
+        res.status(200).send('succes')
     } catch (e) {
         res.status(500).send(e.message)
     }

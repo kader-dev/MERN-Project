@@ -117,11 +117,13 @@ class NewDepartment extends Component {
                                 name="manager"
                                 id="manager"
                             >
+                                <option placeholder="enter manager">enter manager</option>
                                 {users.map((u =>
                                     <option>
                                         {u.email}
                                     </option>))}
                             </Input>
+
                         </Col>
                     </FormGroup>
                     <Button

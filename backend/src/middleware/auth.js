@@ -15,7 +15,6 @@ const auth = async (req, res, next) => {
         req.token = token
         req.user = user
         req.body.Department = dep
-    
         next()
     } catch (e) {
         res.status(401).send({ error: 'please authenticate' })

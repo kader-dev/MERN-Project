@@ -63,6 +63,7 @@ export const loadUser = () => dispatch => {
             type: USER_LOADED,
             payload: res.data
         }))
+
         .catch(e => {
             dispatch(returnErrors(e.response.data, e.response.status));
             dispatch({

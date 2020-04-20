@@ -10,7 +10,7 @@ import {
     UPDATE_DEPARTMENT_FAIL
 } from './departmentTypes'
 import { returnErrors } from '../error/errorActions'
-
+import store from '../store'
 
 export const getDepartments = () => dispatch => {
     dispatch(setDepartmentsLoading());
@@ -82,4 +82,18 @@ export const setDepartmentsLoading = () => {
     return {
         type: DEPARTMENTS_LOADING
     }
+}
+
+
+
+
+
+export const tokenConfig = () => {
+    const token = store.getState().user.token
+    const config = {
+        headers: {
+            "Authorization": `Bearer ${token}`
+        }
+    }
+    return config;
 }
