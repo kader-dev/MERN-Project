@@ -14,6 +14,9 @@ let Todo = new Schema({
     Skills: {
         type: String
     },
+    level: {
+        type: String
+    },
     image: {
         type: String
     }

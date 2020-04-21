@@ -4,9 +4,11 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const todoRoutes = express.Router();
+const trainRoutes = express.Router();
 const PORT = 4000;
 
 let Todo = require('./todo.model');
+let Train = require('./training.model');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -18,6 +20,8 @@ connection.once('open', function() {
     console.log("MongoDB database connection established successfully");
 })
 
+///////////////////////////
+///////////////////////////
 todoRoutes.route('/').get(function(req, res) {
     Todo.find(function(err, todos) {
         if (err) {
@@ -55,6 +59,7 @@ todoRoutes.route('/update/:id').post(function(req, res) {
             todo.Lastname = req.body.Lastname;
             todo.Adress = req.body.Adress;
             todo.Skills = req.body.Skills;
+            todo.level = req.body.level;
 
             todo.save().then(todo => {
                 res.json('Todo updated');
@@ -71,7 +76,38 @@ todoRoutes.route('/delete/:id').delete(function(req, res) {
         .catch(err => res.status(400).json('error'+ err))
 });
 
+///////////////////////////
+///////////////////////////
+trainRoutes.route('/').get(function(req, res) {
+    Train.find(function(err, todos) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json(todos);
+        }
+    });
+});
+
+trainRoutes.route('/add').post(function(req, res) {
+    let todo = new Train(req.body);
+    todo.save()
+        .then(todo => {
+            res.status(200).json({'todo': 'todo added successfully'});
+        })
+        .catch(err => {
+            res.status(400).send('adding new todo failed');
+        });
+});
+
+trainRoutes.route('/delete/:id').delete(function(req, res) {
+    Train.findByIdAndDelete(req.params.id)
+        .then(()=> res.json("delete ok"))
+        .catch(err => res.status(400).json('error'+ err))
+});
+
+
 app.use('/todos', todoRoutes);
+app.use('/train', trainRoutes);
 
 app.listen(PORT, function() {
     console.log("Server is running on Port: " + PORT);
