@@ -7,9 +7,7 @@ const up = async (req, res, next) => {
         const token = req.header('Authorization').replace('Bearer ', '')
         const decoded = jwt.verify(token, 'thisismyapp')
         const user = await User.findOne({ _id: decoded._id, 'tokens.token': token })
-        console.log(user)
         const dep = await Department.findOne({ "manager": user._id })
-        console.log(dep)
         const email = req.body.manager
         const manager = await User.findOneAndUpdate(
             { "email": email },
@@ -24,7 +22,7 @@ const up = async (req, res, next) => {
         }
         req.token = token
         req.user = user
-        req.body.Department = dep
+        req.body.Department = dep._id
         req.body.manager = manager
 
         next()

@@ -14,10 +14,9 @@ const initialState = {
     token: localStorage.getItem('token'),
     isAuthenticated: null,
     isLoading: false,
-    user: null,
+    user: localStorage.getItem('user'),
     users: []
 }
-
 
 export default function (state = initialState, action) {
     switch (action.type) {
@@ -27,6 +26,7 @@ export default function (state = initialState, action) {
                 isLoading: true
             };
         case USER_LOADED:
+            localStorage.setItem('user', JSON.stringify(action.payload.user));
             return {
                 ...state,
                 isAuthenticated: true,
@@ -36,6 +36,7 @@ export default function (state = initialState, action) {
         case LOGIN_SUCCESS:
         case REGISTER_SUCCESS:
             localStorage.setItem('token', action.payload.token);
+            localStorage.setItem('user', JSON.stringify(action.payload.user));
             return {
                 ...state,
                 ...action.payload,
@@ -57,7 +58,7 @@ export default function (state = initialState, action) {
         case GET_ALL_USERS:
             return {
                 ...state,
-                users:action.payload
+                users: action.payload
             }
         default:
             return state

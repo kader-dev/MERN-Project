@@ -34,7 +34,7 @@ export default function (state = initialState, action) {
         case DELETE_UNITE:
             return {
                 ...state,
-                unites: state.unites.filter(u => action.payload.id !== u._id)
+                unites: state.unites.filter(u => action.payload !== u._id)
             }
         case UPDATE_UNITE:
             return {

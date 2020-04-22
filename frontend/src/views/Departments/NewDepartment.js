@@ -4,12 +4,12 @@ import PropTypes from 'prop-types'
 import { getDepartments, addDepartment } from '../../redux/department/departmentActions'
 import { getAllUsers } from '../../redux/user/userActions'
 import {
-    Alert, Row,
-    CardBody,
-    Col, CardHeader, Button,
-    Modal, ModalBody, ModalHeader,
-    FormGroup, Input, Label, Form, Table
+    Alert,
+    Col, Button,
+    FormGroup, Input, Label, Form
 } from 'reactstrap'
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import { Redirect, Link } from 'react-router-dom'
 
@@ -22,7 +22,7 @@ class NewDepartment extends Component {
             description: '',
             name: '',
             manager: '',
-            msg: '',
+            msg: ''
         };
     }
     static propTypes = {
@@ -43,7 +43,6 @@ class NewDepartment extends Component {
                 this.setState({ msg: error.message })
             } else {
                 this.setState({ msg: null })
-                console.log(add)
             }
         }
         if (!this.state.redirectTo) {
@@ -71,7 +70,6 @@ class NewDepartment extends Component {
             manager: this.state.manager,
         }
         this.props.addDepartment(department)
-        //this.props.history.push('/All_Departments')
     }
 
     render() {
@@ -132,6 +130,7 @@ class NewDepartment extends Component {
                         block >
                         Create
              </Button>
+                  
                 </Form>
             </Fragment>
         )

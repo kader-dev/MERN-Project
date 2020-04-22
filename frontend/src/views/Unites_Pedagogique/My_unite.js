@@ -1,10 +1,18 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { getUnites } from '../../redux/unite_pedagogique/unite_pedagogique_Actions'
+import { getUnitesDepartment,deleteUnite } from '../../redux/unite_pedagogique/unite_pedagogique_Actions'
 import { getAllUsers } from '../../redux/user/userActions'
 import store from '../../redux/store'
 import { loadUser } from '../../redux/user/userActions'
+import {
+    Card, Row,
+    Col, Button,
+    Table, Alert, CardHeader, CardBody
+} from 'reactstrap'
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 class My_Unite extends React.Component {
     constructor(props) {
         super(props)
@@ -13,26 +21,79 @@ class My_Unite extends React.Component {
         }
     }
     static propTypes = {
-        getUnites: PropTypes.func.isRequired,
+        getUnitesDepartment: PropTypes.func.isRequired,
         unites: PropTypes.object.isRequired,
         getAllUsers: PropTypes.func.isRequired,
-        user: PropTypes.object.isRequired
+        user: PropTypes.object.isRequired,
+        users: PropTypes.object.isRequired,
+        deleteUnite: PropTypes.func.isRequired,
     }
 
     componentDidMount() {
-        this.props.getUnites()
+        this.props.getUnitesDepartment()
         this.props.getAllUsers()
-        store.dispatch(loadUser())
-        this.setState({ role: this.props.user.role })
+    }
+    onDelete = id => {
+        this.props.deleteUnite(id)
+    }
+
+    onUpdate = (id) => {
+        this.props.history.push(`/All_Unites/${id}`)
+    }
+    New = () => {
+        this.props.history.push('/All_Unites/New')
     }
 
     render() {
+        const { unites } = this.props.unites
+        const { users } = this.props.users
         return (
-            <div>
-
-                <div>my unites</div>
-
-            </div>
+            <Fragment>
+                <ToastContainer autoClose={2500} />
+                <Row>
+                    <Col>
+                        <Card>
+                            <CardHeader>
+                                <Button color="primary" onClick={this.New} className="mr-1">Add Unite</Button>
+                            </CardHeader>
+                            <CardBody>
+                                <Table Condensed responsive >
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Description</th>
+                                            <th>Manager</th>
+                                            <th>Operattion</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {unites.map((up =>
+                                            <tr>
+                                                <td>{up.name}</td>
+                                                <td>{up.description}</td>
+                                                {users.filter(u => u._id === up.manager).map((u =>
+                                                    <td> {u.email}</td>
+                                                ))
+                                                }
+                                                <td>
+                                                    <Button onClick={this.onUpdate.bind(this, up._id)} color="success">
+                                                        UPDATE
+                                               </Button>
+                                                    {"  "}
+                                                    <Button onClick={this.onDelete.bind(this, up._id)} color="danger">
+                                                        DELETE
+                                                </Button>
+                                                </td>
+                                            </tr>
+                                        ))
+                                        }
+                                    </tbody>
+                                </Table>
+                            </CardBody>
+                        </Card>
+                    </Col>
+                </Row>
+            </Fragment>
 
         )
     }
@@ -51,4 +112,4 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps, { getUnites, getAllUsers })(My_Unite)                
+export default connect(mapStateToProps, { getUnitesDepartment, getAllUsers ,deleteUnite})(My_Unite)                

@@ -19,7 +19,7 @@ router.post('/', up, async (req, res) => {
         res.status(400).send(e.message)
     }
     const dep = await Department.findOneAndUpdate(
-        { "_id": req.body.Department._id },
+        { "_id": req.body.Department },
         { $push: { "list_up": up } },
         { returnNewDocument: true })
     dep.save()
@@ -37,7 +37,7 @@ router.get('/', async (req, res) => {
 })
 
 //dep by unites
-router.get('/test', async (req, res) => {
+router.get('/unites', async (req, res) => {
     const liste = await unité_pédagogique.aggregate([{ $group: { _id: "$Department", uni: { $push: "$name" } } }])
     try {
         res.status(200).send(
@@ -64,16 +64,22 @@ router.get('/my', up, async (req, res) => {
     } catch (e) {
         res.status(400).send(e.message)
     }
+
 })
 
 //delete up
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', up, async (req, res) => {
+    const dep = await Department.findOneAndUpdate(
+        { "_id": req.body.Department },
+        { $pull: { "list_up": req.params.id } },
+        { returnNewDocument: true })
+    dep.save()
     try {
-        const up = await unité_pédagogique.findOneAndDelete(req.params.id)
-        if (!up) {
+        const unite = await unité_pédagogique.findOneAndDelete(req.params.id)
+        if (!unite) {
             return res.status(404).send("unité_pédagogique not found")
         }
-        res.send(up)
+        res.send(unite)
     } catch (e) {
         res.status(500).send(e.message)
     }

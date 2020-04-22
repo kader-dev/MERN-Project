@@ -3,20 +3,15 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { getUnites } from '../../redux/unite_pedagogique/unite_pedagogique_Actions'
 import { getAllUsers } from '../../redux/user/userActions'
-import store from '../../redux/store'
-import { loadUser } from '../../redux/user/userActions'
+import { getDepartments } from '../../redux/department/departmentActions'
 import My_Unite from './My_unite'
-import {
-    Card, Row,
-    Col, Button,
-    Table
-} from 'reactstrap'
+import { Badge, Card, CardBody, CardFooter, CardHeader, Col, Row, Collapse, Fade } from 'reactstrap';
+
 class All_Unites extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            role: null,
-            depunites: []
+
         }
     }
     static propTypes = {
@@ -24,56 +19,64 @@ class All_Unites extends React.Component {
         unites: PropTypes.object.isRequired,
         getAllUsers: PropTypes.func.isRequired,
         user: PropTypes.object.isRequired,
-        depunites: PropTypes.object.isRequired
+        depunites: PropTypes.object.isRequired,
+        getDepartments: PropTypes.func.isRequired,
     }
 
     componentDidMount() {
+        this.props.getDepartments()
         this.props.getUnites()
         this.props.getAllUsers()
-        store.dispatch(loadUser())
-        this.setState({ role: this.props.user.role })
-        this.setState({ depunites: this.props.unites })
     }
 
     render() {
+        const { departments } = this.props.departments
+        const { unites } = this.props.unites
+        const { role } = this.props.user
         return (
-            <div>
-                {this.state.role === 'department_manager' ?
-                    <My_Unite />
-                    :
-                    <div>
-                        {<p>
-                            {this.state.depunites.map((u =>
-                                <Fragment>
-                                    <h1>{u._id}</h1>
-                                    {u.uni.map((p => <h1>{p}</h1>))}
-                                </Fragment>
+            <Fragment>
+                <div>
+                    {role === 'department_manager' ?
+                        <My_Unite />
+                        :
 
-                            ))
-                            }
-                        </p>
+                        <div className="animated fadeIn">
+                            <Row>
+                                {unites.map((u =>
+                                    <Col xs="12" sm="6" md="4">
+                                        <Card className="border-primary">
+                                            <CardHeader>
+                                                {departments.filter(d => d._id === u._id).map((d =>
+                                                    <h1>{d.name}</h1>
+                                                ))
+                                                }
+                                            </CardHeader>
+                                            <CardBody>
+                                                {u.uni.map((p =>
+                                                    <ul>
+                                                        <li><h3>{p}</h3></li>
+                                                    </ul>
+                                                ))}
+                                            </CardBody>
+                                        </Card>
 
-                        }
-
-                    </div>
-                }
-            </div>
-
+                                    </Col>
+                                ))}
+                            </Row>
+                        </div>
+                    }
+                </div>
+            </Fragment>
         )
     }
-
-
 }
 
-
-
-
-
 const mapStateToProps = state => ({
-    unites: state.unite.unites,
+    departments: state.department,
+    unites: state.unite,
     users: state.user,
     user: state.user.user,
 })
 
 
-export default connect(mapStateToProps, { getUnites, getAllUsers })(All_Unites)                
+export default connect(mapStateToProps, { getUnites, getDepartments, getAllUsers })(All_Unites)                

@@ -13,17 +13,16 @@ import {
 } from './unite_pedagogique_Types'
 import store from '../store'
 import { returnErrors } from '../error/errorActions'
-
+import { toast } from "react-toastify";
 
 export const getUnites = () => dispatch => {
-    axios.get('http://localhost:4000/unite_pedagogique/test')
+    axios.get('http://localhost:4000/unite_pedagogique/unites')
         .then(
             res => dispatch({
                 type: GET_ALL_UNITES,
                 payload: res.data
             })
         )
-        .then(res => console.log( res.payload))
         .catch(e => {
             dispatch(returnErrors(e.response.data, e.response.status, 'GET_ALL_UNITES_FAIL'));
             dispatch({
@@ -32,10 +31,37 @@ export const getUnites = () => dispatch => {
         })
 }
 
+export const getUnitesDepartment = () => dispatch => {
+    axios.get('http://localhost:4000/unite_pedagogique/my', tokenConfig())
+        .then(
+            res => dispatch({
+                type: GET_ALL_UNITES,
+                payload: res.data
+            })
+        )
+        .catch(e => {
+            dispatch(returnErrors(e.response.data, e.response.status, 'GET_ALL_UNITES_FAIL'));
+            dispatch({
+                type: GET_ALL_UNITES_FAIL
+            })
+        })
+}
 
-
-
-
+export const deleteUnite = (id) => dispatch => {
+    axios.delete(`http://localhost:4000/unite_pedagogique/${id}`, tokenConfig())
+        .then(
+            res => dispatch({
+                type: DELETE_UNITE,
+                payload: id
+            })
+        ).then(toast.success("DELETE SUCCESS"))
+        .catch(e => {
+            dispatch(returnErrors(e.response.data, e.response.status, 'DELETE_UNITE_FAIL'));
+            dispatch({
+                type: DELETE_UNITE_FAIL
+            })
+        })
+}
 
 
 export const tokenConfig = () => {

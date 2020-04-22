@@ -9,10 +9,13 @@ import {
     UPDATE_DEPARTMENT_FAIL
 } from './departmentTypes'
 
+
+
 const initialState = {
     departments: [],
     loading: false,
-    add: null
+    add: null,
+    depart: [],
 }
 
 export default function (state = initialState, action) {
@@ -36,9 +39,11 @@ export default function (state = initialState, action) {
                 departments: state.departments.filter(dep => dep._id !== action.payload)
             }
         case UPDATE_DEPARTMENT:
+            const deps = state.departments.filter(dep => dep._id !== action.payload._id)
+            deps.push(action.payload)
             return {
                 ...state,
-                departments: [action.payload, ...state.departments]
+                departments: action.payload,
             }
         case DEPARTMENTS_LOADING:
             return {

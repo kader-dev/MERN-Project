@@ -2,7 +2,6 @@ const Department = require('../models/department')
 const depdel = async (req, res, next) => {
     try {
         const department = await Department.findOne({ "_id": req.params.id })
-        console.log(department)
         req.department = department
         next()
     } catch (e) {

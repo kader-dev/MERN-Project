@@ -11,6 +11,10 @@ import {
 } from './departmentTypes'
 import { returnErrors } from '../error/errorActions'
 import store from '../store'
+import { toast } from "react-toastify";
+
+
+
 
 export const getDepartments = () => dispatch => {
     dispatch(setDepartmentsLoading());
@@ -34,9 +38,8 @@ export const addDepartment = (department) => dispatch => {
             res => dispatch({
                 type: ADD_DEPARTMENT,
                 payload: res.data
-            })
-        )
-        .catch(e => {
+            }),
+        ).catch(e => {
             dispatch(returnErrors(e.response.data, e.response.status, 'ADD_DEPARTMENT_FAIL'));
             dispatch({
                 type: ADD_DEPARTMENT_FAIL
@@ -51,9 +54,9 @@ export const updateDepartment = ({ id, name, manager, description }) => dispatch
                 type: UPDATE_DEPARTMENT,
                 payload: res.data
             })
-        )
+        ).then(toast.success("UPDATE SUCCESS"))
         .catch(e => {
-            dispatch(returnErrors(e.response.data, e.response.status, 'ADD_DEPARTMENT_FAIL'));
+            dispatch(returnErrors(e.response.data, e.response.status, 'UPDATE_DEPARTMENT_FAIL'));
             dispatch({
                 type: UPDATE_DEPARTMENT_FAIL
             })
@@ -67,10 +70,10 @@ export const deleteDepartment = id => dispatch => {
             res => dispatch({
                 type: DELETE_DEPARTMENT,
                 payload: id
-            })
-        )
+            }))
+        .then(toast.success("DELETE SUCCESS"))
         .catch(e => {
-            dispatch(returnErrors(e.response.data, e.response.status, 'ADD_DEPARTMENT_FAIL'));
+            dispatch(returnErrors(e.response.data, e.response.status, 'DELETE_DEPARTMENT_FAIL'));
             dispatch({
                 type: DELETE_DEPARTMENT_FAIL
             })

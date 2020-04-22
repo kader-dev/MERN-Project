@@ -25,6 +25,11 @@ const unite_pedagogique_Schema = new mongoose.Schema({
         timestamps: true
     })
 
+unite_pedagogique_Schema.pre('remove', async function (next) {
+    const unite = this
+    await unite_pedagogique.deleteMany({ list_up: unite._id })
+    next()
+})
 const unite_pedagogique = mongoose.model('unite_pedagogique', unite_pedagogique_Schema)
 
 module.exports = unite_pedagogique

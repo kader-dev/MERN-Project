@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import PropTypes from 'prop-types'
 import { getAllUsers } from '../../redux/user/userActions'
 import {
-  Table, Button
+  Table, Button, Row, Col, CardBody, Card, CardHeader
 } from 'reactstrap'
 import store from '../../redux/store'
 import { loadUser } from '../../redux/user/userActions'
@@ -24,7 +24,6 @@ class Users extends Component {
   }
   componentDidMount() {
     this.props.getAllUsers()
-    store.dispatch(loadUser())
     this.setState({ role: this.props.user.role })
   }
 
@@ -34,32 +33,43 @@ class Users extends Component {
   }
   render() {
     const { users } = this.props.users
+    const { role } = this.props.user
     return (
       <Fragment>
-        {this.state.role === 'center_manager' ?
-          (<Button color="primary" onClick={this.onDeleteClick} className="mr-1">Add User</Button>)
-          : <hr></hr>}
-        <hr></hr>
-        <Table Username >
-          <thead>
-            <tr>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Email</th>
-              <th>Role</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user =>
-              <tr>
-                <td>{user.First_name}</td>
-                <td>{user.Last_name}</td>
-                <td>{user.email}</td>
-                <td>{user.role}</td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+
+        <Row>
+          <Col>
+            <Card>
+              <CardHeader>
+                <Button hidden={role !== 'center_manager'} color="primary" onClick={this.onDeleteClick} className="mr-1">Add User</Button>
+              </CardHeader>
+              <CardBody>
+                <Table Condensed responsive >
+                  <thead>
+                    <tr>
+
+                      <th>First Name</th>
+                      <th>Last Name</th>
+                      <th>Email</th>
+                      <th>Role</th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {users.map((user =>
+                      <tr>
+                        <td>{user.First_name}</td>
+                        <td>{user.Last_name}</td>
+                        <td>{user.email}</td>
+                        <td>{user.role}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
       </Fragment>
     )
   }
