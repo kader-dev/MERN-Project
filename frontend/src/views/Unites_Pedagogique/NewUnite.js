@@ -1,18 +1,16 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from "react-redux";
 import PropTypes from 'prop-types'
-import { getDepartments, addDepartment } from '../../redux/department/departmentActions'
+import { addUnite } from '../../redux/unite_pedagogique/unite_pedagogique_Actions'
 import { getAllUsers } from '../../redux/user/userActions'
 import {
     Alert,
     Col, Button,
     FormGroup, Input, Label, Form
 } from 'reactstrap'
-
-
 import { Redirect } from 'react-router-dom'
 
-class NewDepartment extends Component {
+class NewUnite extends Component {
 
     constructor() {
         super();
@@ -25,7 +23,7 @@ class NewDepartment extends Component {
         };
     }
     static propTypes = {
-        addDepartment: PropTypes.func.isRequired,
+        addUnite: PropTypes.func.isRequired,
         getAllUsers: PropTypes.func.isRequired,
         users: PropTypes.object.isRequired,
         error: PropTypes.object.isRequired,
@@ -38,7 +36,7 @@ class NewDepartment extends Component {
     componentDidUpdate(prevProps) {
         const { error, succes } = this.props
         if (error !== prevProps.error) {
-            if (error.id === 'ADD_DEPARTMENT_FAIL') {
+            if (error.id === 'ADD_UNITE_FAIL') {
                 this.setState({ msg: error.message })
             } else {
                 this.setState({ msg: null })
@@ -63,19 +61,19 @@ class NewDepartment extends Component {
 
     onSubmit = async (e) => {
         e.preventDefault()
-        const department = {
+        const unite = {
             name: this.state.name,
             description: this.state.description,
             manager: this.state.manager,
         }
-        this.props.addDepartment(department)
+        this.props.addUnite(unite)
     }
 
     render() {
         const { users } = this.props.users
 
         if (this.state.redirectTo) {
-            return <Redirect to="/All_Departments" />
+            return <Redirect to="/All_Unites" />
         }
 
         return (
@@ -129,7 +127,7 @@ class NewDepartment extends Component {
                         block >
                         Create
              </Button>
-                  
+
                 </Form>
             </Fragment>
         )
@@ -140,9 +138,9 @@ class NewDepartment extends Component {
 
 const mapStateToProps = state => ({
     users: state.user,
-    succes: state.department.succes,
+    succes: state.unite.succes,
     error: state.error
 })
 
 
-export default connect(mapStateToProps, { getAllUsers, addDepartment })(NewDepartment) 
+export default connect(mapStateToProps, { getAllUsers, addUnite })(NewUnite) 

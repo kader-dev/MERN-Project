@@ -31,15 +31,12 @@ class All_Departments extends Component {
         user: PropTypes.object.isRequired,
     }
 
-    componentDidMount() {   
-        this.props.getDepartments()  
+    componentDidMount() {
+        this.props.getDepartments()
         this.props.getAllUsers()
+        console.log(this.props)
     }
-    /*
-    componentDidUpdate(){
-        store.dispatch(getAllUsers())
-    }
-    */
+    
     onDelete = id => {
         this.props.deleteDepartment(id)
     }
@@ -48,6 +45,7 @@ class All_Departments extends Component {
     }
     New = () => {
         this.props.history.push('/All_Departments/New')
+
     }
     render() {
         const { departments } = this.props.departments
@@ -71,7 +69,7 @@ class All_Departments extends Component {
                                             <th>Name</th>
                                             <th>Description</th>
                                             <th>Manager</th>
-                                            <th hidden={role !== 'center_manager'}>Operattion</th>
+                                            <th hidden={role !== 'center_manager'}>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>

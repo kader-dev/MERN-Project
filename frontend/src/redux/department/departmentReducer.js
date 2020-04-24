@@ -14,7 +14,7 @@ import {
 const initialState = {
     departments: [],
     loading: false,
-    add: null,
+    succes: null,
     depart: [],
 }
 
@@ -31,7 +31,7 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 departments: [action.payload, ...state.departments],
-                add: true
+                succes: true
             }
         case DELETE_DEPARTMENT:
             return {
@@ -49,7 +49,7 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 loading: true,
-                add: null
+                succes: null
             };
         case UPDATE_DEPARTMENT_FAIL:
         case DELETE_DEPARTMENT_FAIL:

@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from "react-redux";
 import PropTypes from 'prop-types'
-import { updateDepartment } from '../../redux/department/departmentActions'
+import { updateUnite } from '../../redux/unite_pedagogique/unite_pedagogique_Actions'
 import { getAllUsers } from '../../redux/user/userActions'
 import {
     Button, Alert,
@@ -9,6 +9,7 @@ import {
 } from 'reactstrap'
 import axios from "axios";
 import { Redirect } from 'react-router-dom'
+
 class Details extends Component {
 
     constructor(props) {
@@ -21,18 +22,18 @@ class Details extends Component {
         };
     }
     static propTypes = {
-        updateDepartment: PropTypes.func.isRequired,
+        updateUnite: PropTypes.func.isRequired,
         getAllUsers: PropTypes.func.isRequired,
         users: PropTypes.object.isRequired
     }
 
     componentDidMount() {
         this.props.getAllUsers()
-        axios.get(`http://localhost:4000/department/${this.props.match.params.id}`)
+        axios.get(`http://localhost:4000/unite_pedagogique/${this.props.match.params.id}`)
             .then(res => {
-                this.setState({ name: res.data[0].name })
-                this.setState({ description: res.data[0].description })
-                this.setState({ manager: res.data[0].manager })
+                this.setState({ name: res.data.name })
+                this.setState({ description: res.data.description })
+                this.setState({ manager: res.data.manager })
             }
             )
     }
@@ -43,16 +44,16 @@ class Details extends Component {
     }
 
     componentDidUpdate(prevProps) {
-        const { error, add } = this.props
+        const { error, succes } = this.props
         if (error !== prevProps.error) {
-            if (error.id === 'UPDATE_DEPARTMENT_FAIL') {
+            if (error.id === 'UPDATE_UNITE_FAIL') {
                 this.setState({ msg: error.message })
             } else {
                 this.setState({ msg: null })
             }
         }
         if (!this.state.redirectTo) {
-            if (add) {
+            if (succes) {
                 this.root()
             }
         }
@@ -68,20 +69,20 @@ class Details extends Component {
             this.setState({ msg: 'ggg' })
         }
         else {
-
-            const department = {
+            const unite = {
                 id: this.props.match.params.id,
                 name: this.state.name,
                 description: this.state.description,
                 manager: this.state.manager,
             }
-            this.props.updateDepartment(department)
-            this.props.history.push('/All_Departments')
+            this.props.updateUnite(unite)
+            this.props.history.push('/All_Unites')
         }
     }
+
     render() {
         if (this.state.redirectTo) {
-            return <Redirect to="/All_Departments" />
+            return <Redirect to="/All_Unites" />
         }
         const { users } = this.props.users
         return (
@@ -111,7 +112,9 @@ class Details extends Component {
                                 type="select"
                                 name="manager"
                                 id="manager"
-                            ><option placeholder="enter manager">enter manager</option>
+                            >
+
+                                <option placeholder="enter manager">enter manager</option>
                                 {users.map((u =>
                                     <option>
                                         {u.email}
@@ -139,4 +142,4 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps, { getAllUsers, updateDepartment })(Details) 
+export default connect(mapStateToProps, { getAllUsers, updateUnite })(Details) 

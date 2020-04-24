@@ -8,13 +8,15 @@ import {
     GET_ONE_UNITE_FAIL,
     DELETE_UNITE_FAIL,
     ADD_UNITE_FAIL,
-    UPDATE_UNITE_FAIL
+    UPDATE_UNITE_FAIL,
+    UNITES_LOADING
 } from './unite_pedagogique_Types'
 
 
 const initialState = {
     unites: [],
-    loading: false
+    loading: false,
+    succes: null
 }
 
 
@@ -29,7 +31,8 @@ export default function (state = initialState, action) {
         case ADD_UNITE:
             return {
                 ...state,
-                unites: [action.pauload, ...state.unites]
+                unites: [action.payload, ...state.unites],
+                succes: true
             };
         case DELETE_UNITE:
             return {
@@ -39,8 +42,14 @@ export default function (state = initialState, action) {
         case UPDATE_UNITE:
             return {
                 ...state,
-                unites: [action.pauload, ...state.unites]
+                unites: action.payload
             };
+        case UNITES_LOADING:
+            return {
+                ...state,
+                loading: true,
+                succes: null
+            }
         case GET_ALL_UNITES_FAIL:
         case GET_ONE_UNITE_FAIL:
         case DELETE_UNITE_FAIL:

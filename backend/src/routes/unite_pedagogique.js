@@ -10,7 +10,8 @@ const User = require('../models/user')
 //add up
 router.post('/', up, async (req, res) => {
     const up = new unité_pédagogique({
-        ...req.body
+        ...req.body,
+        Department: req.Department
     })
     try {
         await up.save()
@@ -67,6 +68,17 @@ router.get('/my', up, async (req, res) => {
 
 })
 
+//get by id
+router.get('/:id', async (req, res) => {
+    try {
+        const unité = await unité_pédagogique.findById(req.params.id)
+        res.status(200).send(unité)
+    }
+    catch (e) {
+        res.status(404).send(e.message)
+    }
+})
+
 //delete up
 router.delete('/:id', up, async (req, res) => {
     const dep = await Department.findOneAndUpdate(
@@ -87,9 +99,9 @@ router.delete('/:id', up, async (req, res) => {
 
 
 //update up
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', up, async (req, res) => {
     const updates = Object.keys(req.body)
-    const allowedUpdates = ['description', "name"]
+    const allowedUpdates = ['description', "name", "manager"]
     const isValidOperation = updates.every((update) => allowedUpdates.includes(update))
 
     if (!isValidOperation) {
@@ -102,7 +114,8 @@ router.patch('/:id', async (req, res) => {
         }
         updates.forEach((update) => up[update] = req.body[update])
         await up.save()
-        res.send(up)
+        const list_up = await unité_pédagogique.find({})
+        res.send(list_up)
     } catch (e) {
         res.status(500).send(e.message)
     }

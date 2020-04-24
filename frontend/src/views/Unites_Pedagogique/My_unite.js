@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { getUnitesDepartment,deleteUnite } from '../../redux/unite_pedagogique/unite_pedagogique_Actions'
+import { getUnitesDepartment, deleteUnite } from '../../redux/unite_pedagogique/unite_pedagogique_Actions'
 import { getAllUsers } from '../../redux/user/userActions'
 import store from '../../redux/store'
 import { loadUser } from '../../redux/user/userActions'
@@ -17,11 +17,10 @@ class My_Unite extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            role: null
         }
     }
+
     static propTypes = {
-        getUnitesDepartment: PropTypes.func.isRequired,
         unites: PropTypes.object.isRequired,
         getAllUsers: PropTypes.func.isRequired,
         user: PropTypes.object.isRequired,
@@ -36,7 +35,6 @@ class My_Unite extends React.Component {
     onDelete = id => {
         this.props.deleteUnite(id)
     }
-
     onUpdate = (id) => {
         this.props.history.push(`/All_Unites/${id}`)
     }
@@ -102,9 +100,6 @@ class My_Unite extends React.Component {
 }
 
 
-
-
-
 const mapStateToProps = state => ({
     unites: state.unite,
     users: state.user,
@@ -112,4 +107,4 @@ const mapStateToProps = state => ({
 })
 
 
-export default connect(mapStateToProps, { getUnitesDepartment, getAllUsers ,deleteUnite})(My_Unite)                
+export default connect(mapStateToProps, { getUnitesDepartment, getAllUsers, deleteUnite })(My_Unite)             

@@ -26,7 +26,6 @@ export default function (state = initialState, action) {
                 isLoading: true
             };
         case USER_LOADED:
-            localStorage.setItem('user', JSON.stringify(action.payload.user));
             return {
                 ...state,
                 isAuthenticated: true,
