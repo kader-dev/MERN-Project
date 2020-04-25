@@ -11,6 +11,11 @@ const unite_pedagogique_Schema = new mongoose.Schema({
         required: true,
         trim: true
     },
+    list_Teachers: [{
+        teacher: {
+            type: String
+        }
+    }],
     Department: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
@@ -18,7 +23,8 @@ const unite_pedagogique_Schema = new mongoose.Schema({
     },
     manager: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        required: true
     }
 },
     {

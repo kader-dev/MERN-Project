@@ -17,7 +17,6 @@ import { returnErrors } from '../error/errorActions'
 import { toast } from "react-toastify";
 
 export const getUnites = () => dispatch => {
-    dispatch(setUnitesLoading());
     axios.get('http://localhost:4000/unite_pedagogique/unites')
         .then(
             res => dispatch({
@@ -34,7 +33,6 @@ export const getUnites = () => dispatch => {
 }
 
 export const getUnitesDepartment = () => dispatch => {
-    dispatch(setUnitesLoading());
     axios.get('http://localhost:4000/unite_pedagogique/my', tokenConfig())
         .then(
             res => dispatch({
@@ -50,14 +48,47 @@ export const getUnitesDepartment = () => dispatch => {
         })
 }
 
-export const addUnite = (Unite) => dispatch => {
+export const getMyUnite = () => dispatch => {
+    axios.get('http://localhost:4000/unite_pedagogique/my/unite', tokenConfig())
+        .then(
+            res => dispatch({
+                type: GET_ONE_UNITE,
+                payload: res.data
+            })
+        ).then(res=>console.log(res.payload[0].list_Teachers[0]))
+        .catch(e => {
+            dispatch(returnErrors(e.response.data, e.response.status, 'GET_ONE_UNITE_FAIL'));
+            dispatch({
+                type: GET_ONE_UNITE_FAIL
+            })
+        })
+}
+
+export const getUnite = (name) => dispatch => {
+    axios.get(`http://localhost:4000/unite_pedagogique/unite/${name}`)
+        .then(
+            res => dispatch({
+                type: GET_ONE_UNITE,
+                payload: res.data
+            })
+        )
+        .catch(e => {
+            dispatch(returnErrors(e.response.data, e.response.status, 'GET_ONE_UNITE_FAIL'));
+            dispatch({
+                type: GET_ONE_UNITE_FAIL
+            })
+        })
+}
+
+export const addUnite = Unite => dispatch => {
     axios.post('http://localhost:4000/unite_pedagogique', Unite, tokenConfig())
         .then(
             res => dispatch({
                 type: ADD_UNITE,
                 payload: res.data
             }),
-        ).catch(e => {
+        )
+        .catch(e => {
             dispatch(returnErrors(e.response.data, e.response.status, 'ADD_UNITE_FAIL'));
             dispatch({
                 type: ADD_UNITE_FAIL
@@ -66,7 +97,6 @@ export const addUnite = (Unite) => dispatch => {
 }
 
 export const deleteUnite = (id) => dispatch => {
-    dispatch(setUnitesLoading());
     axios.delete(`http://localhost:4000/unite_pedagogique/${id}`, tokenConfig())
         .then(
             res => dispatch({
@@ -83,7 +113,7 @@ export const deleteUnite = (id) => dispatch => {
 }
 
 export const updateUnite = ({ id, name, manager, description }) => dispatch => {
-    axios.patch(`http://localhost:4000/unite_pedagogique/${id}`, ({ name, manager, description }),tokenConfig())
+    axios.patch(`http://localhost:4000/unite_pedagogique/${id}`, ({ name, manager, description }), tokenConfig())
         .then(
             res => dispatch({
                 type: UPDATE_UNITE,

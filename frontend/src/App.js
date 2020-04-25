@@ -36,8 +36,9 @@ class App extends Component {
               <Route exact path="/All_Departments/:id" name="New" render={props => <DefaultLayout {...props} />} />
               <Route exact path="/All_Unites" name="Unites" render={props => <DefaultLayout {...props} />} />
               <Route exact path="/All_Unites/New" name="NewUnite" render={props => <DefaultLayout {...props} />} />
-              <Route exact path="/All_Unites/:id" name="Unites" render={props => <DefaultLayout {...props} />} />
-
+              <Route exact path="/All_Unites/details/:name" name="Unites" render={props => <DefaultLayout {...props} />} />
+              <Route exact path="/All_Unites/update/:id" name="Unites" render={props => <DefaultLayout {...props} />} />
+              
               
               <Route exact path="/" name="Login Page" render={props => <Login {...props} />} />
             </Switch>

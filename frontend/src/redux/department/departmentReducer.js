@@ -15,6 +15,7 @@ const initialState = {
     departments: [],
     loading: false,
     succes: null,
+    update:null,
     depart: [],
 }
 
@@ -25,7 +26,8 @@ export default function (state = initialState, action) {
                 ...state,
                 departments: action.payload,
                 loading: false,
-                add: null
+                succes: null,
+                update:null
             };
         case ADD_DEPARTMENT:
             return {
@@ -39,11 +41,10 @@ export default function (state = initialState, action) {
                 departments: state.departments.filter(dep => dep._id !== action.payload)
             }
         case UPDATE_DEPARTMENT:
-            const deps = state.departments.filter(dep => dep._id !== action.payload._id)
-            deps.push(action.payload)
             return {
                 ...state,
                 departments: action.payload,
+                update:true
             }
         case DEPARTMENTS_LOADING:
             return {

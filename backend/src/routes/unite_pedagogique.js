@@ -2,6 +2,7 @@ const express = require('express')
 const unité_pédagogique = require('../models/unite_pedagogique')
 const Department = require('../models/department')
 const up = require('../middleware/up')
+const updel = require('../middleware/updel')
 const auth = require('../middleware/auth')
 const router = new express.Router()
 const User = require('../models/user')
@@ -20,7 +21,7 @@ router.post('/', up, async (req, res) => {
         res.status(400).send(e.message)
     }
     const dep = await Department.findOneAndUpdate(
-        { "_id": req.body.Department },
+        { "_id": req.Department },
         { $push: { "list_up": up } },
         { returnNewDocument: true })
     dep.save()
@@ -59,7 +60,7 @@ router.get('/unites', async (req, res) => {
 //get all up by user
 router.get('/my', up, async (req, res) => {
 
-    const list_unités_pédagogique = await unité_pédagogique.find({ "Department": req.body.Department._id })
+    const list_unités_pédagogique = await unité_pédagogique.find({ "Department": req.Department })
     try {
         res.status(200).send(list_unités_pédagogique)
     } catch (e) {
@@ -67,7 +68,15 @@ router.get('/my', up, async (req, res) => {
     }
 
 })
+//get all up by user
+router.get('/my/unite', up, async (req, res) => {
+    try {
+        res.status(200).send(res.json(req.unité))
+    } catch (e) {
+        res.status(400).send(e.message)
+    }
 
+})
 //get by id
 router.get('/:id', async (req, res) => {
     try {
@@ -78,20 +87,25 @@ router.get('/:id', async (req, res) => {
         res.status(404).send(e.message)
     }
 })
-
+//get by id
+router.get('/unite/:name', async (req, res) => {
+    try {
+        const unité = await unité_pédagogique.find({ "name": req.params.name })
+        res.status(200).send(unité)
+    }
+    catch (e) {
+        res.status(404).send(e.message)
+    }
+})
 //delete up
-router.delete('/:id', up, async (req, res) => {
-    const dep = await Department.findOneAndUpdate(
-        { "_id": req.body.Department },
-        { $pull: { "list_up": req.params.id } },
-        { returnNewDocument: true })
-    dep.save()
+router.delete('/:id', updel, async (req, res) => {
+
     try {
         const unite = await unité_pédagogique.findOneAndDelete(req.params.id)
         if (!unite) {
             return res.status(404).send("unité_pédagogique not found")
         }
-        res.send(unite)
+        res.send(req.params.id)
     } catch (e) {
         res.status(500).send(e.message)
     }

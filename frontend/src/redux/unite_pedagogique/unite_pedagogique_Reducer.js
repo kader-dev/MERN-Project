@@ -16,7 +16,9 @@ import {
 const initialState = {
     unites: [],
     loading: false,
-    succes: null
+    succes: null,
+    update: null,
+    unite: []
 }
 
 
@@ -26,7 +28,14 @@ export default function (state = initialState, action) {
             return {
                 ...state,
                 unites: action.payload,
-                loading: false
+                loading: false,
+                succes: null,
+                update: null
+            };
+        case GET_ONE_UNITE:
+            return {
+                ...state,
+                unite: action.payload,
             };
         case ADD_UNITE:
             return {
@@ -42,7 +51,8 @@ export default function (state = initialState, action) {
         case UPDATE_UNITE:
             return {
                 ...state,
-                unites: action.payload
+                unites: action.payload,
+                update: true
             };
         case UNITES_LOADING:
             return {

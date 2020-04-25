@@ -29,7 +29,9 @@ class Unites extends React.Component {
         this.props.getUnites()
         this.props.getAllUsers()
     }
-
+    onUpdate = (name) => {
+        this.props.history.push(`/All_Unites/details/${name}`)
+    }
     render() {
         const { departments } = this.props.departments
         const { unites } = this.props.unites
@@ -42,6 +44,7 @@ class Unites extends React.Component {
                         {unites.map((u =>
                             <Col xs="12" sm="6" md="4">
                                 <Card className="border-primary">
+
                                     <CardHeader>
                                         {departments.filter(d => d._id === u._id).map((d =>
                                             <h1>{d.name}</h1>
@@ -50,8 +53,8 @@ class Unites extends React.Component {
                                     </CardHeader>
                                     <CardBody>
                                         {u.uni.map((p =>
-                                            <ul>
-                                                <li><h3>{p}</h3></li>
+                                            <ul>          
+                                                <li><h3 onClick={this.onUpdate.bind(this, p)}>{p}</h3></li>
                                             </ul>
                                         ))}
                                     </CardBody>

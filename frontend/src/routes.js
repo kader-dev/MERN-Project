@@ -44,7 +44,9 @@ const NewDepartment = React.lazy(() => import('./views/Departments/NewDepartment
 
 const Unites = React.lazy(() => import('./views/Unites_Pedagogique/All_Unites'));
 const NewUnite = React.lazy(() => import('./views/Unites_Pedagogique/NewUnite'))
-const updateUnite = React.lazy(() => import('./views/Unites_Pedagogique/Details'))
+const DetailsUnite = React.lazy(() => import('./views/Unites_Pedagogique/Details'))
+const updateUnite = React.lazy(() => import('./views/Unites_Pedagogique/update'))
+
 // https://github.com/ReactTraining/react-router/tree/master/packages/react-router-config
 const routes = [
   { path: '/dashboard', name: 'Home', component: Dashboard },
@@ -98,7 +100,9 @@ const routes = [
 
   { path: '/All_Unites', exact: true, name: 'Unites', component: Unites },
   { path: '/All_Unites/New', exact: true, name: 'NewUnite', component: NewUnite },
-  { path: '/All_Unites/:id', exact: true, name: 'NewUnite', component: updateUnite },
+  { path: '/All_Unites/details/:name', exact: true, name: 'details', component: DetailsUnite },
+  { path: '/All_Unites/update/:id', exact: true, name: 'update', component: updateUnite },
+  
 ];
 
 export default routes;

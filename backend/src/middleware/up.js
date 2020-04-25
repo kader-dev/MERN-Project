@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 const Department = require('../models/department')
-
+const unité_pédagogique = require('../models/unite_pedagogique')
 const up = async (req, res, next) => {
     try {
         const token = req.header('Authorization').replace('Bearer ', '')
@@ -11,7 +11,7 @@ const up = async (req, res, next) => {
 
         const dep = await Department.findOne({ "manager": user._id })
         const email = req.body.manager
-      
+        const unité = await unité_pédagogique.find({ "manager": user._id })
         const manager = await User.findOneAndUpdate(
             { "email": email },
             { $set: { "role": "up_manager" } },
@@ -26,7 +26,8 @@ const up = async (req, res, next) => {
 
         req.token = token
         req.user = user
-        req.Department = dep._id
+        req.unité = unité
+        req.Department = dep
         req.body.manager = manager
 
         next()

@@ -1,17 +1,9 @@
 import React, { Fragment } from 'react'
 import Unites from './Unites'
-import My_Unite from './My_Unite'
+import MyUnite from './My_Unite'
+import My_All_Unites from './My_All_Unites'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { getUnitesDepartment, deleteUnite } from '../../redux/unite_pedagogique/unite_pedagogique_Actions'
-import { getAllUsers } from '../../redux/user/userActions'
-import {
-    Card, Row,
-    Col, Button,
-    Table, CardHeader, CardBody
-} from 'reactstrap'
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 class All_Unites extends React.Component {
     constructor(props) {
@@ -20,8 +12,8 @@ class All_Unites extends React.Component {
         }
     }
 
-    static propTypes = {   
-        user: PropTypes.object.isRequired,   
+    static propTypes = {
+        user: PropTypes.object.isRequired,
     }
 
     render() {
@@ -29,9 +21,15 @@ class All_Unites extends React.Component {
         return (
             <div>
                 {role === 'department_manager' ?
-                    <My_Unite {...this.props} />
+                    <My_All_Unites {...this.props} />
                     :
-                    <Unites />
+                    <Fragment>
+                        {role === 'up_manager' ?
+                            <MyUnite {...this.props} />
+                            :
+                            <Unites {...this.props} />
+                        }
+                    </Fragment>
                 }
             </div>
         )
