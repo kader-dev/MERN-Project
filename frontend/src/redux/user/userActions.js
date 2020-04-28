@@ -33,7 +33,20 @@ export const register = ({ First_name, Last_name, email, password }) => dispatch
         })
 }
 
+export const oauthgoogle = data => dispatch => {
 
+    axios.post('http://localhost:4000/users/google', { access_token: data })
+        .then(res => dispatch({
+            type: REGISTER_SUCCESS,
+            payload: res.data
+        }))
+        .catch(e => {
+            dispatch(returnErrors(e.response.data, e.response.status, 'REGISTER_FAIL'));
+            dispatch({
+                type: REGISTER_FAIL
+            })
+        })
+}
 
 export const login = ({ email, password }) => dispatch => {
     const config = {

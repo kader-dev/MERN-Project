@@ -3,10 +3,13 @@ import {
   Button, Card, CardBody, CardFooter, Col, Container,
   Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row, Alert
 } from 'reactstrap';
+import GoogleLogin from 'react-google-login';
 import PropTypes from 'prop-types'
 import { connect } from "react-redux";
 import { register } from '../../../redux/user/userActions'
 import { Redirect, Link } from 'react-router-dom'
+
+
 class Register extends Component {
   constructor() {
     super()
@@ -48,6 +51,10 @@ class Register extends Component {
     this.setState({
       redirectTo: true
     })
+  }
+
+  responseGoogle = (response) => {
+    console.log(response);
   }
 
   onChange = (e) => {
@@ -133,7 +140,7 @@ class Register extends Component {
                       <Button className="btn-facebook mb-1" block><span>facebook</span></Button>
                     </Col>
                     <Col xs="12" sm="6">
-                      <Button className="btn-twitter mb-1" block><span>twitter</span></Button>
+                      <Button className="btn-facebook mb-1" block><span>facebook</span></Button>
                     </Col>
                   </Row>
                 </CardFooter>

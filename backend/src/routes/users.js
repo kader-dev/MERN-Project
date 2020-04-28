@@ -3,6 +3,9 @@ var router = express.Router();
 const User = require('../models/user')
 const auth = require('../middleware/auth')
 const multer = require('multer')
+const passport = require('passport');
+const passportConf = require('../middleware/passport');
+
 
 const upload = multer({
   limits: {
@@ -20,8 +23,14 @@ const upload = multer({
 //create user
 router.post('/', upload.single("file"), async (req, res) => {
   // req.body.file = req.file.buffer
-  const user = new User(
-    req.body)
+  const { First_name, Last_name, email, password } = req.body;
+  const user = new User({
+    method: 'local',
+    First_name: First_name,
+    Last_name: Last_name,
+    email: email,
+    password: password
+  })
   try {
     await user.save()
     const token = await user.generateAuthToekn()
@@ -29,7 +38,30 @@ router.post('/', upload.single("file"), async (req, res) => {
   } catch (e) {
     res.status(400).send(e.message)
   }
+
 })
+
+const passportGoogle = passport.authenticate('googleToken', { session: false });
+
+router.post('/google', passportGoogle, async (req, res) => {
+  const existingUser = await User.findOne({ "google.id": req.user.google.id });
+  if (existingUser) {
+    res.status(400).send(e.message)
+  }
+  else {
+    const user = req.user
+    try {
+      await user.save()
+      const token = await user.generateAuthToekn()
+      res.status(201).send({ user, token })
+    } catch (e) {
+      res.status(400).send(e.message)
+    }
+  }
+})
+
+
+
 
 //get all users
 router.get('/all', auth, async (req, res) => {
@@ -39,6 +71,20 @@ router.get('/all', auth, async (req, res) => {
   }
   catch (e) { res.status(400).send(e.message) }
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //get user by id
 router.get('/:id', async (req, res) => {

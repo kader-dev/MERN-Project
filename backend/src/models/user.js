@@ -7,21 +7,24 @@ const jwt = require('jsonwebtoken')
 
 
 const userSchema = new mongoose.Schema({
+    method: {
+        type: String,
+        enum: ['local', 'google', 'facebook'],
+        required: true
+    },
+
     First_name: {
         type: String,
-        required: true,
         trim: true
     },
     Last_name: {
         type: String,
-        required: true,
         trim: true,
         uppercase: true
     },
     email: {
         type: String,
         unique: true,
-        required: true,
         trim: true,
         lowercase: true,
         validate(value) {
@@ -32,7 +35,6 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
         minlength: 7,
         trim: true,
         validate(value) {
@@ -41,10 +43,19 @@ const userSchema = new mongoose.Schema({
             }
         }
     },
+    google: {
+        id: {
+            type: String
+        },
+        email: {
+            type: String,
+            lowercase: true
+        }
+    },
     role: {
         type: String,
         trim: true,
-        default: ''
+        default: 'teacher'
 
     },
     tokens: [{
@@ -56,6 +67,11 @@ const userSchema = new mongoose.Schema({
 }, {
     timestamps: true
 })
+
+
+
+
+
 
 userSchema.virtual('Departments', {
     ref: 'Department',
@@ -70,16 +86,23 @@ userSchema.virtual('unite_pedagogiques', {
 })
 
 userSchema.pre('save', async function (next) {
-    const user = this
-
-    if (user.isModified('password')) {
-        user.password = await bcrypt.hash(user.password, 8)
+    try {
+        if (this.method !== 'local') {
+            next();
+        }
+        const user = this
+        if (user.isModified('local.password')) {
+            user.local.password = await bcrypt.hash(user.local.password, 8)
+        }
+        next()
+    } catch (error) {
+        next(error);
     }
+});
 
-    next()
-})
 
 userSchema.statics.findByCredentials = async (email, password) => {
+
     const user = await User.findOne({ email })
 
     if (!user) {

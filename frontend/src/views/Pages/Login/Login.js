@@ -6,8 +6,10 @@ import {
 } from 'reactstrap';
 import PropTypes from 'prop-types'
 import { connect } from "react-redux";
-import { login } from '../../../redux/user/userActions'
+import { login, oauthgoogle } from '../../../redux/user/userActions'
 import { Redirect } from 'react-router-dom'
+import GoogleLogin from 'react-google-login';
+import FacebookLogin from 'react-facebook-login';
 class Login extends Component {
 
   constructor() {
@@ -25,6 +27,7 @@ class Login extends Component {
     isAuthenticated: PropTypes.bool,
     error: PropTypes.object.isRequired,
     login: PropTypes.func.isRequired,
+    oauthgoogle: PropTypes.func.isRequired,
   }
 
 
@@ -61,6 +64,13 @@ class Login extends Component {
     const user = { email, password }
     this.props.login(user)
   }
+  responseGoogle = (response) => {
+    this.props.oauthgoogle(response.accessToken)
+  }
+  responseFacebook = (response) => {
+    console.log(response);
+  }
+
 
   render() {
 
@@ -100,6 +110,20 @@ class Login extends Component {
                         <Col xs="6">
                           <Button color="primary" className="px-4">Login</Button>
                         </Col>
+                        <Col xs="6">
+                          <GoogleLogin
+                            clientId="223699417515-n3cid348h0f557i948hi3g0cj9gb07uu.apps.googleusercontent.com"
+                            buttonText="Login"
+                            onSuccess={this.responseGoogle.bind(this.responseGoogle)}
+                            onFailure={this.responseGoogle.bind(this.responseGoogle)}
+                            cookiePolicy={'single_host_origin'}
+                          />
+                          <FacebookLogin
+                            appId="227671341851240"
+                            fields="name,email,picture"
+                            callback={this.responseFacebook.bind(this.responseFacebook)}
+                          />
+                        </Col>
                         <Col xs="6" className="text-right">
                           <Button color="link" className="px-0">Forgot password?</Button>
                         </Col>
@@ -117,6 +141,7 @@ class Login extends Component {
                         <Button color="primary" className="mt-3" active tabIndex={-1}>Register Now!</Button>
                       </Link>
                     </div>
+
                   </CardBody>
                 </Card>
               </CardGroup>
@@ -132,4 +157,4 @@ const mapStateToProps = state => ({
   isAuthenticated: state.user.isAuthenticated,
   error: state.error
 })
-export default connect(mapStateToProps, { login })(Login);
+export default connect(mapStateToProps, { login, oauthgoogle })(Login);
