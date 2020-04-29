@@ -24,7 +24,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
+app.use('/statistics', require('./routes/statistics.js'));
 app.use('/users', require('./routes/users'));
 app.use('/department', require('./routes/department'));
 app.use('/unite_pedagogique', require('./routes/unite_pedagogique'));
