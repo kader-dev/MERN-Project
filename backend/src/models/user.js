@@ -15,16 +15,19 @@ const userSchema = new mongoose.Schema({
 
     First_name: {
         type: String,
+        required: true,
         trim: true
     },
     Last_name: {
         type: String,
+        required: true,
         trim: true,
         uppercase: true
     },
     email: {
         type: String,
         unique: true,
+        required: true,
         trim: true,
         lowercase: true,
         validate(value) {
@@ -43,6 +46,9 @@ const userSchema = new mongoose.Schema({
             }
         }
     },
+    picture: {
+        type: String,
+    },
     google: {
         id: {
             type: String
@@ -52,12 +58,20 @@ const userSchema = new mongoose.Schema({
             lowercase: true
         }
     },
-    role: {
-        type: String,
-        trim: true,
-        default: 'teacher'
-
+    facebook: {
+        id: {
+            type: String
+        },
+        email: {
+            type: String,
+            lowercase: true
+        }
     },
+    roles: {
+        type: [String],
+        trim: true,
+    }
+    ,
     tokens: [{
         token: {
             type: String,
@@ -91,8 +105,8 @@ userSchema.pre('save', async function (next) {
             next();
         }
         const user = this
-        if (user.isModified('local.password')) {
-            user.local.password = await bcrypt.hash(user.local.password, 8)
+        if (user.isModified('password')) {
+            user.password = await bcrypt.hash(user.password, 8)
         }
         next()
     } catch (error) {
@@ -132,7 +146,6 @@ userSchema.methods.toJSON = function () {
     const userObject = user.toObject()
     delete userObject.password
     delete userObject.tokens
-
     return userObject
 }
 

@@ -26,6 +26,12 @@ class Profile extends Component {
         return (
             <Form>
                 <FormGroup row>
+                    <Label for="exampleEmail" sm={2}>picture</Label>
+                    <Col sm={10}>
+                        <img src={user.picture} />
+                    </Col>
+                </FormGroup>
+                <FormGroup row>
                     <Label for="exampleEmail" sm={2}>Email</Label>
                     <Col sm={10}>
                         <Input disabled type="email" name="email" id="exampleEmail"
@@ -49,10 +55,10 @@ class Profile extends Component {
                 </FormGroup>
 
                 <FormGroup row>
-                    <Label for="examplePassword" sm={2}>role</Label>
+                    <Label for="examplePassword" sm={2}>roles</Label>
                     <Col sm={10}>
                         <Input disabled type="text" name="password" id="examplePassword"
-                            placeholder="password placeholder" value={user.role} />
+                            placeholder="password placeholder" value={user.roles} />
                     </Col>
                 </FormGroup>
 

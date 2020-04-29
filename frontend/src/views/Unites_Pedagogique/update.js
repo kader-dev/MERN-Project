@@ -63,8 +63,21 @@ class update extends Component {
             redirectTo: true
         })
     }
-    onUpdate = (id) => {
-        this.props.history.push(`/All_Unites/${id}`)
+  
+    onSubmit = e => {
+        e.preventDefault()
+        if (!this.state.manager) {
+            this.setState({ msg: 'ggg' })
+        }
+        else {
+            const unite = {
+                id: this.props.match.params.id,
+                name: this.state.name,
+                description: this.state.description,
+                manager: this.state.manager,
+            }
+            this.props.updateUnite(unite)
+        }
     }
     render() {
         if (this.state.redirectTo) {

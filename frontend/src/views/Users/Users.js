@@ -33,15 +33,14 @@ class Users extends Component {
   }
   render() {
     const { users } = this.props.users
-    const { role } = this.props.user
+    const { roles } = this.props.user
     return (
       <Fragment>
-
         <Row>
           <Col>
             <Card>
               <CardHeader>
-                <Button hidden={role !== 'center_manager'} color="primary" onClick={this.onDeleteClick} className="mr-1">Add User</Button>
+                <Button hidden={!roles.includes('center_manager')} color="primary" onClick={this.onDeleteClick} className="mr-1">Add User</Button>
               </CardHeader>
               <CardBody>
                 <Table Condensed responsive >
@@ -51,7 +50,7 @@ class Users extends Component {
                       <th>First Name</th>
                       <th>Last Name</th>
                       <th>Email</th>
-                      <th>Role</th>
+                      <th>Roles</th>
 
                     </tr>
                   </thead>
@@ -60,8 +59,11 @@ class Users extends Component {
                       <tr>
                         <td>{user.First_name}</td>
                         <td>{user.Last_name}</td>
-                        <td>{user.email}</td>
-                        <td>{user.role}</td>
+                        <td >{user.email}</td>
+                        <td>
+                          {user.roles.map((r => <span>{r}<br></br></span>
+                          ))}
+                        </td>
                       </tr>
                     ))}
                   </tbody>

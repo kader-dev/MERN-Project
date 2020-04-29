@@ -17,14 +17,14 @@ class All_Unites extends React.Component {
     }
 
     render() {
-        const { role } = this.props.user
+        const { roles } = this.props.user
         return (
             <div>
-                {role === 'department_manager' ?
+                {roles.includes('department_manager') ?
                     <My_All_Unites {...this.props} />
                     :
                     <Fragment>
-                        {role === 'up_manager' ?
+                        {roles.includes('up_manager') ?
                             <MyUnite {...this.props} />
                             :
                             <Unites {...this.props} />

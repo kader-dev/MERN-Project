@@ -48,7 +48,7 @@ class All_Departments extends Component {
     render() {
         const { departments } = this.props.departments
         const { users } = this.props.users
-        const { role } = this.props.user
+        const { roles } = this.props.user
         return (
             <Fragment>
                 <ToastContainer autoClose={2500} />
@@ -57,7 +57,8 @@ class All_Departments extends Component {
                     <Col>
                         <Card>
                             <CardHeader>
-                                <Button hidden={role !== 'center_manager'} color="primary" onClick={this.New} className="mr-1">Add Department</Button>
+                                <Button hidden={!roles.includes('center_manager')} color="primary"
+                                    onClick={this.New} className="mr-1">Add Department</Button>
                             </CardHeader>
                             <CardBody>
                                 <Table Condensed responsive >
@@ -67,7 +68,7 @@ class All_Departments extends Component {
                                             <th>Name</th>
                                             <th>Description</th>
                                             <th>Manager</th>
-                                            <th hidden={role !== 'center_manager'}>Actions</th>
+                                            <th hidden={!roles.includes('center_manager')}>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -79,7 +80,7 @@ class All_Departments extends Component {
                                                     <td> {u.email}</td>
                                                 ))
                                                 }
-                                                <td hidden={role !== 'center_manager'}>
+                                                <td hidden={!roles.includes('center_manager')}>
                                                     <Button onClick={this.onUpdate.bind(this, dep._id)} color="success">
                                                         UPDATE
                                                </Button>

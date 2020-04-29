@@ -52,13 +52,15 @@ class DefaultHeader extends Component {
           <strong>{user ? `Welcome ${user.First_name} ${user.Last_name}` : ''}</strong>
         </span>
         <Nav className="ml-auto" navbar>
-          <NavItem className="d-md-down-none">
-            <NavLink to="#" className="nav-link"><i className="icon-bell"></i><Badge pill color="danger">5</Badge></NavLink>
-          </NavItem>
+
           <UncontrolledDropdown nav direction="down">
-            <DropdownToggle nav>
-              <img src={'../../assets/img/avatars/6.jpg'} className="img-avatar" alt="admin@bootstrapmaster.com" />
-            </DropdownToggle>
+            {user.picture !== null ?
+              <DropdownToggle nav>
+                <img src={user.picture} className="img-avatar" alt="admin@bootstrapmaster.com" />
+              </DropdownToggle>
+              : null
+            }
+
             <DropdownMenu right>
               <DropdownItem header tag="div" className="text-center"><strong>Account</strong>
               </DropdownItem>

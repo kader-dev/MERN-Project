@@ -14,7 +14,7 @@ const up = async (req, res, next) => {
         const unité = await unité_pédagogique.find({ "manager": user._id })
         const manager = await User.findOneAndUpdate(
             { "email": email },
-            { $set: { "role": "up_manager" } },
+            { $push: { "roles": "up_manager" } },
             { returnNewDocument: true })
         try {
             manager.save()

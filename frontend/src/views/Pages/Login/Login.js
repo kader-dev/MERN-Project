@@ -6,7 +6,7 @@ import {
 } from 'reactstrap';
 import PropTypes from 'prop-types'
 import { connect } from "react-redux";
-import { login, oauthgoogle } from '../../../redux/user/userActions'
+import { login, oauthgoogle, oauthfacebook } from '../../../redux/user/userActions'
 import { Redirect } from 'react-router-dom'
 import GoogleLogin from 'react-google-login';
 import FacebookLogin from 'react-facebook-login';
@@ -21,17 +21,13 @@ class Login extends Component {
       redirectTo: false
     }
   }
-
-
   static propTypes = {
     isAuthenticated: PropTypes.bool,
     error: PropTypes.object.isRequired,
     login: PropTypes.func.isRequired,
     oauthgoogle: PropTypes.func.isRequired,
+    oauthfacebook: PropTypes.func.isRequired,
   }
-
-
-
   componentDidUpdate(prevProps) {
     const { error, isAuthenticated } = this.props
     if (error !== prevProps.error) {
@@ -68,7 +64,7 @@ class Login extends Component {
     this.props.oauthgoogle(response.accessToken)
   }
   responseFacebook = (response) => {
-    console.log(response);
+    this.props.oauthfacebook(response.accessToken)
   }
 
 
@@ -157,4 +153,4 @@ const mapStateToProps = state => ({
   isAuthenticated: state.user.isAuthenticated,
   error: state.error
 })
-export default connect(mapStateToProps, { login, oauthgoogle })(Login);
+export default connect(mapStateToProps, { login, oauthgoogle, oauthfacebook })(Login);

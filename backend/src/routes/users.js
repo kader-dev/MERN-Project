@@ -4,9 +4,9 @@ const User = require('../models/user')
 const auth = require('../middleware/auth')
 const multer = require('multer')
 const passport = require('passport');
-const passportConf = require('../middleware/passport');
-
-
+require('../middleware/passport');
+const passportGoogle = passport.authenticate('googleToken', { session: false });
+const passportFacebook = passport.authenticate('facebookToken', { session: false });
 const upload = multer({
   limits: {
     fileSize: 1000000000000
@@ -23,13 +23,11 @@ const upload = multer({
 //create user
 router.post('/', upload.single("file"), async (req, res) => {
   // req.body.file = req.file.buffer
-  const { First_name, Last_name, email, password } = req.body;
   const user = new User({
     method: 'local',
-    First_name: First_name,
-    Last_name: Last_name,
-    email: email,
-    password: password
+    roles: ['teacher'],
+    picture:'',
+    ...req.body
   })
   try {
     await user.save()
@@ -41,24 +39,33 @@ router.post('/', upload.single("file"), async (req, res) => {
 
 })
 
-const passportGoogle = passport.authenticate('googleToken', { session: false });
 
+//
+
+//regsiter google
 router.post('/google', passportGoogle, async (req, res) => {
-  const existingUser = await User.findOne({ "google.id": req.user.google.id });
-  if (existingUser) {
+  const user = req.user
+  try {
+    const token = await user.generateAuthToekn()
+    res.status(201).send({ user, token })
+  } catch (e) {
     res.status(400).send(e.message)
   }
-  else {
-    const user = req.user
-    try {
-      await user.save()
-      const token = await user.generateAuthToekn()
-      res.status(201).send({ user, token })
-    } catch (e) {
-      res.status(400).send(e.message)
-    }
+}
+)
+
+//regsiter google
+router.post('/facebook', passportFacebook, async (req, res) => {
+
+  const user = req.user
+  try {
+    const token = await user.generateAuthToekn()
+    res.status(201).send({ user, token })
+  } catch (e) {
+    res.status(400).send(e.message)
   }
-})
+}
+)
 
 
 

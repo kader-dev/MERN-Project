@@ -2,7 +2,10 @@ import React, { Fragment } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { getMyUnite } from '../../redux/unite_pedagogique/unite_pedagogique_Actions'
-
+import {
+    Badge, Card, CardBody, CardHeader, Col, ListGroup, ListGroupItem,
+    ListGroupItemHeading, ListGroupItemText, Row, TabContent, TabPane
+} from 'reactstrap';
 
 class MyUnite extends React.Component {
     constructor(props) {
@@ -24,23 +27,51 @@ class MyUnite extends React.Component {
         const { unite } = this.props.unite
 
         return (
-            <Fragment>
+            <div>
+                {unite.map((up =>
+                    <Fragment>
+                        <div className="animated fadeIn">
+                            <Row>
+                                <Col sm="12" xl="6">
+                                    <Card>
+                                        <CardHeader>
+                                            <i className="fa fa-align-justify"></i><strong>My Unite infos :</strong>
+                                        </CardHeader>
+                                        <CardBody>
+                                            <ListGroup>
+                                                <ListGroupItem className="justify-content-between">
+                                                    <h6>Name :</h6><h2>{up.name}</h2>
+                                                </ListGroupItem>
+                                                <ListGroupItem className="justify-content-between">
+                                                    <h6>Description :</h6><h2>{up.description}</h2>
+                                                </ListGroupItem>
+                                            </ListGroup>
+                                        </CardBody>
+                                    </Card>
+                                </Col>
+                                <Col sm="12" xl="6">
+                                    <Card>
+                                        <CardHeader>
+                                            <i className="fa fa-align-justify"></i><strong>List of Teachers</strong>
 
-                <div className="animated fadeIn">
-                    {unite.map((up =>
-                        <tr>
-                            <td>{up.name}</td>
-                            <td>{up.description}</td>
-                            {up.list_Teachers.map((p =>
-                                <ul>
-                                    <li><h3>{p.teacher}</h3></li>
-                                </ul>
-                            ))}
-                        </tr>
-                    ))
-                    }
-                </div>
-            </Fragment>
+                                        </CardHeader>
+                                        <CardBody>
+                                            {up.list_Teachers.map((p =>
+                                                <ListGroup>
+                                                    <ListGroupItem className="justify-content-between">
+                                                        <h3>{p.teacher}</h3>
+                                                    </ListGroupItem>
+                                                </ListGroup>
+                                            ))}
+                                        </CardBody>
+                                    </Card>
+                                </Col>
+                            </Row>
+                        </div>
+                    </Fragment>
+                ))
+                }
+            </div>
         )
     }
 }

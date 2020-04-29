@@ -6,7 +6,7 @@ const department = async (req, res, next) => {
         const email = req.body.manager
         const user = await User.findOneAndUpdate(
             { "email": email },
-            { $set: { "role": "department_manager" } },
+            { $push: { "roles": "department_manager" } },
             { returnNewDocument: true })
         try {
             user.save()
