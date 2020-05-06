@@ -7,29 +7,18 @@ const up = async (req, res, next) => {
         const token = req.header('Authorization').replace('Bearer ', '')
         const decoded = jwt.verify(token, 'thisismyapp')
         const user = await User.findOne({ _id: decoded._id, 'tokens.token': token })
-
-
         const dep = await Department.findOne({ "manager": user._id })
-        const email = req.body.manager
         const unité = await unité_pédagogique.find({ "manager": user._id })
-        const manager = await User.findOneAndUpdate(
-            { "email": email },
-            { $push: { "roles": "up_manager" } },
-            { returnNewDocument: true })
-        try {
-            manager.save()
-        } catch (e) {
-        }
+        const manager = await User.findOne({ "email": req.body.manager })
+
         if (!user) {
             res.status(401).send('user not found')
         }
-
         req.token = token
         req.user = user
         req.unité = unité
         req.Department = dep
         req.body.manager = manager
-
         next()
     } catch (e) {
         res.status(401).send(e.message)

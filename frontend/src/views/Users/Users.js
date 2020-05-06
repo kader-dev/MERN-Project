@@ -28,19 +28,17 @@ class Users extends Component {
   }
 
 
-  onDeleteClick = id => {
-    console.log(this.state.role)
+  onDeleteClick = ({r}) => {
+    console.log({r})
   }
   render() {
     const { users } = this.props.users
-    const { roles } = this.props.user
     return (
       <Fragment>
         <Row>
           <Col>
             <Card>
               <CardHeader>
-                <Button hidden={!roles.includes('center_manager')} color="primary" onClick={this.onDeleteClick} className="mr-1">Add User</Button>
               </CardHeader>
               <CardBody>
                 <Table Condensed responsive >
@@ -61,7 +59,10 @@ class Users extends Component {
                         <td>{user.Last_name}</td>
                         <td >{user.email}</td>
                         <td>
-                          {user.roles.map((r => <span>{r}<br></br></span>
+                          {user.roles.map((r => <span>
+                            <i className="icon-close icons font-2xl d-block mt-4"
+                              onClick={this.onDeleteClick.bind(this,r, user.email)}> {r}</i>
+                            <br></br></span>
                           ))}
                         </td>
                       </tr>
@@ -72,7 +73,7 @@ class Users extends Component {
             </Card>
           </Col>
         </Row>
-      </Fragment>
+      </Fragment >
     )
   }
 }

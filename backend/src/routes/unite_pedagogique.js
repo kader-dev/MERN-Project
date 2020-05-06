@@ -20,6 +20,13 @@ router.post('/', up, async (req, res) => {
     } catch (e) {
         res.status(400).send(e.message)
     }
+    const manager = await User.findOne({ "email": req.body.manager })
+    if (!manager.roles.includes("up_manager")) {
+        await User.findOneAndUpdate(
+            { "email": email },
+            { $push: { "roles": "up_manager" } },
+            { returnNewDocument: true })
+    }
     const dep = await Department.findOneAndUpdate(
         { "_id": req.Department },
         { $push: { "list_up": up } },
@@ -70,6 +77,7 @@ router.get('/my', up, async (req, res) => {
 })
 //get all up by user
 router.get('/my/unite', up, async (req, res) => {
+
     try {
         res.status(200).send(res.json(req.unité))
     } catch (e) {
@@ -123,6 +131,10 @@ router.patch('/:id', up, async (req, res) => {
     }
     try {
         const up = await unité_pédagogique.findById(req.params.id)
+        await User.findOneAndUpdate(
+            { "_id": up.manager },
+            { $push: { "roles": "up_manager" } },
+            { returnNewDocument: true })
         if (!up) {
             return res.status(404).send("unité_pédagogique not found")
         }

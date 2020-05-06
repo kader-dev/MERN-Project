@@ -58,7 +58,7 @@ class Register extends Component {
   }
 
   onChange = (e) => {
-    this.setState({ msg: null })
+    //this.setState({ msg: null })
     this.setState({ [e.target.name]: e.target.value })
   }
 
@@ -134,16 +134,7 @@ class Register extends Component {
                   </Form>
                   <Button color="red" block><Link to='/'>I already have  Account</Link></Button>
                 </CardBody>
-                <CardFooter className="p-4">
-                  <Row>
-                    <Col xs="12" sm="6">
-                      <Button className="btn-facebook mb-1" block><span>facebook</span></Button>
-                    </Col>
-                    <Col xs="12" sm="6">
-                      <Button className="btn-facebook mb-1" block><span>facebook</span></Button>
-                    </Col>
-                  </Row>
-                </CardFooter>
+                
               </Card>
             </Col>
           </Row>

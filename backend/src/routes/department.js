@@ -21,7 +21,7 @@ router.post('/', department, async (req, res) => {
 router.get('/', async (req, res) => {
     const list_deparmnets = await Department.find({})
     try {
-        res.status(200).send(res.json(list_deparmnets))
+        res.status(200).send(list_deparmnets)
     } catch (e) {
         res.status(400).send(e.message)
     }
@@ -65,14 +65,18 @@ router.patch('/:id', department, async (req, res) => {
         return res.status(400).send({ error: 'Invalid updates!' })
     }
     try {
-        const deparment = await Department.findById(req.params.id)
-        if (!deparment) {
+        const department = await Department.findById(req.params.id)
+        await User.findOneAndUpdate(
+            { "_id": department.manager },
+            { $pull: { "roles": "department_manager" } },
+            { returnNewDocument: true })
+        if (!department) {
             return res.status(404).send("deparment not found")
         }
-        updates.forEach((update) => deparment[update] = req.body[update])
+        updates.forEach((update) => department[update] = req.body[update])
         await deparment.save()
-        const list_deparmnets = await Department.find({})
-        res.send(list_deparmnets)
+        const list_departments = await Department.find({})
+        res.send(list_departments)
     } catch (e) {
         res.status(500).send(e.message)
     }
