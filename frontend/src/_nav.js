@@ -18,8 +18,8 @@ export default {
       },
     },
     {
-      name: "Page 1",
-      url: "/page1",
+      name: "Skills",
+      url: "/skills",
       icon: "icon-puzzle",
     },
   ],
