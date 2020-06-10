@@ -1,21 +1,21 @@
 const express = require("express");
 const router = express.Router();
+const util = require("util");
+const exec = util.promisify(require("child_process").exec);
 
-const { exec } = require("child_process");
-router.get("/", (req, res) => {
-  exec(
-    "node F:/PiFullStackJS/pi-js/backend/scrape.js",
-    (err, stdout, stderr) => {
-      if (err) {
-        //some err occurred
-        console.error(err);
-      } else {
-        // the *entire* stdout and stderr (buffered)
-        console.log(`stdout: ${stdout}`);
-        console.log(`stderr: ${stderr}`);
-        res.status(500).json("done!!!");
+function execShellCommand(cmd) {
+  const exec = require("child_process").exec;
+  return new Promise((resolve, reject) => {
+    exec(cmd, (error, stdout, stderr) => {
+      if (error) {
+        console.warn(error);
       }
-    }
-  );
+      resolve(stdout ? stdout : stderr);
+    });
+  });
+}
+router.get("/", (req, res) => {
+  execShellCommand("node F:/PiFullStackJS/pi-js/backend/scrape.js");
+  res.json("done!!!");
 });
 module.exports = router;

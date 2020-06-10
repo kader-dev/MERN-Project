@@ -9,7 +9,7 @@ export const PaginationComp = ({ skillsPerPage, totalSkills, Paginate }) => {
     <div>
       <Pagination>
         {pageNumbers.map((number) => (
-          <PaginationItem>
+          <PaginationItem key={number}>
             <PaginationLink onClick={() => Paginate(number)} tag="button">
               {number}
             </PaginationLink>

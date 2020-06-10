@@ -81,21 +81,30 @@ class page1 extends Component {
       skillsPerPage: this.state.skills.length,
     });
   }
-  jobiclick() {
+  jobiclick = () => {
     Axios.get("http://localhost:3000/api/jobi").then((Response) => {
       this.setState({
         loading: Response.data,
       });
     });
-  }
+    setTimeout(() => {
+      Axios.get("http://localhost:3000/api/skills")
+        .then((Response) => {
+          this.setState({
+            skills: Response.data,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      console.log("upp");
+    }, 130000);
+  };
   render() {
     const { term, skills, currentPage, skillsPerPage } = this.state;
     const indexOfLastSkill = currentPage * skillsPerPage;
     const indexOfFirstSkill = indexOfLastSkill - skillsPerPage;
-    const currentSkills = this.state.skills.slice(
-      indexOfFirstSkill,
-      indexOfLastSkill
-    );
+    const currentSkills = skills.slice(indexOfFirstSkill, indexOfLastSkill);
     const Paginate = (pageNumber) =>
       this.setState({
         currentPage: pageNumber,
@@ -104,17 +113,11 @@ class page1 extends Component {
       <div>
         <form>
           <input type="text" onChange={this.searchHandler} value={term} />
-          <button
-            onClick={() => {
-              this.jobiclick();
-            }}
-          >
-            jobi
-          </button>
+          <button onClick={this.jobiclick}>jobi</button>
         </form>
         <div className="animated fadeIn">
           <Row>
-            <Col xs="16" lg="7">
+            <Col xs="18" lg="8">
               <Card>
                 <CardHeader>
                   <i className="fa fa-align-justify"></i> Skills list
@@ -133,18 +136,18 @@ class page1 extends Component {
                       {currentSkills
                         .filter(searchingfor(term))
                         .map(({ name, nbr, source, _id }) => (
-                          <tr>
+                          <tr key={_id}>
                             <td>{name}</td>
                             <td>{nbr}</td>
                             <td>{source}</td>
                             <td>
                               <button
-                                class="btn-pill btn btn-danger"
+                                className="btn-pill btn btn-danger"
                                 onClick={() => {
                                   this.Delete(_id);
                                 }}
                               >
-                                <i class="fa fa-trash"></i> Delete
+                                <i className="fa fa-trash"></i> Delete
                               </button>
                             </td>
                           </tr>
