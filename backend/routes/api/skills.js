@@ -19,6 +19,8 @@ router.get("/", (req, res) => {
 router.post("/", (req, res) => {
   const newSkill = new skill({
     name: req.body.name,
+    source: req.body.source,
+    nbr: req.body.priority,
   });
   newSkill.save().then((item) => res.json(item));
 });

@@ -3,22 +3,23 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "nodemon ./bin/www",
     "client": "npm start --prefix ../frontend",
     "dev": "concurrently \" npm start\" \" npm run client\""
   },
   "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
     "concurrently": "^5.1.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
+    "fs": "0.0.1-security",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
     "mongoose": "^5.9.9",
     "morgan": "~1.9.1",
-    "cheerio": "^1.0.0-rc.3",
-    "fs": "0.0.1-security",
     "puppeteer": "^2.1.1",
+    "react-responsive-modal": "^5.0.2",
     "request": "^2.88.2"
   }
 }

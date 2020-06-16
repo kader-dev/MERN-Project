@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Axios from "axios";
 import {
+  Breadcrumb,
+  BreadcrumbItem,
   Badge,
   Card,
   CardBody,
@@ -9,8 +11,20 @@ import {
   Row,
   Table,
   Button,
+  Input,
+  FormGroup,
+  FormText,
+  FormFeedback,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButtonDropdown,
+  InputGroupText,
+  Label,
 } from "reactstrap";
 import PaginationComp from "./PaginationComp";
+import ModalComp from "./ModalComp";
+import { Modal } from "react-responsive-modal";
+import "react-responsive-modal/styles.css";
 function searchingfor(term) {
   return function (x) {
     return x.name.toLowerCase().includes(term.toLowerCase()) || !term;
@@ -25,6 +39,10 @@ class page1 extends Component {
       skillsPerPage: 10,
       currentPage: 1,
       loading: false,
+      open: false,
+      priority: "",
+      name: "",
+      source: "",
     };
 
     this.toggle = this.toggle.bind(this);
@@ -32,6 +50,9 @@ class page1 extends Component {
     this.Delete = this.Delete.bind(this);
     // this.paginate = this.paginate.bind(this);
     this.searchHandler = this.searchHandler.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.onChangeName = this.onChangeName.bind(this);
+    this.onChangePriority = this.onChangePriority.bind(this);
   }
 
   toggle() {
@@ -100,8 +121,57 @@ class page1 extends Component {
       console.log("upp");
     }, 130000);
   };
+  onOpenModal = () => {
+    this.setState({ open: true });
+    console.log("opened");
+  };
+
+  onCloseModal = () => {
+    this.setState({ open: false });
+  };
+
+  onSubmit(e) {
+    e.preventDefault();
+
+    const skillsObject = {
+      name: this.state.name,
+      priority: this.state.priority,
+      source: "My app",
+    };
+    Axios.post("http://localhost:3000/api/skills", skillsObject).then((res) =>
+      console.log("done!!" + res.data)
+    );
+
+    this.setState({ name: "", priority: "" });
+    Axios.get("http://localhost:3000/api/skills")
+      .then((Response) => {
+        this.setState({
+          skills: Response.data,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  onChangeName(e) {
+    this.setState({ name: e.target.value });
+  }
+
+  onChangePriority(e) {
+    this.setState({ priority: e.target.value });
+  }
   render() {
-    const { term, skills, currentPage, skillsPerPage } = this.state;
+    const sapce =
+      "                                                                                                                                                                                 ";
+    const {
+      term,
+      skills,
+      currentPage,
+      skillsPerPage,
+      open,
+      name,
+      priority,
+    } = this.state;
     const indexOfLastSkill = currentPage * skillsPerPage;
     const indexOfFirstSkill = indexOfLastSkill - skillsPerPage;
     const currentSkills = skills.slice(indexOfFirstSkill, indexOfLastSkill);
@@ -111,13 +181,9 @@ class page1 extends Component {
       });
     return (
       <div>
-        <form>
-          <input type="text" onChange={this.searchHandler} value={term} />
-          <button onClick={this.jobiclick}>jobi</button>
-        </form>
         <div className="animated fadeIn">
           <Row>
-            <Col xs="18" lg="8">
+            <Col xs="16" lg="8">
               <Card>
                 <CardHeader>
                   <i className="fa fa-align-justify"></i> Skills list
@@ -127,9 +193,9 @@ class page1 extends Component {
                     <thead>
                       <tr>
                         <th>Skill</th>
-                        <th>Number of occurence</th>
+                        <th>Priority</th>
                         <th>Source</th>
-                        <th>Action</th>
+                        <th>Actions</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -147,7 +213,7 @@ class page1 extends Component {
                                   this.Delete(_id);
                                 }}
                               >
-                                <i className="fa fa-trash"></i> Delete
+                                <i className="fa fa-trash"></i>
                               </button>
                             </td>
                           </tr>
@@ -159,6 +225,112 @@ class page1 extends Component {
                     totalSkills={skills.length}
                     Paginate={Paginate}
                   />
+                </CardBody>
+              </Card>
+            </Col>
+            <Col xs="12" md="4">
+              <Card>
+                <CardBody>
+                  <Row className="align-items-center mt-3">
+                    <Col col="3" sm="4" md="2" xl className="mb-3 mb-xl-0">
+                      <Button color="success" onClick={this.jobiclick}>
+                        Jobi.tn
+                      </Button>
+                    </Col>
+                    <Col col="6" sm="4" md="2" xl className="mb-3 mb-xl-0">
+                      <Button
+                        block
+                        color="link"
+                        className="btn-square"
+                        disabled
+                      ></Button>
+                    </Col>
+                    <Col col="6" sm="4" md="2" xl className="mb-3 mb-xl-0">
+                      <Button
+                        block
+                        color="link"
+                        className="btn-square"
+                        disabled
+                      ></Button>
+                    </Col>
+                    <Col col="6" sm="4" md="2" xl className="mb-3 mb-xl-0">
+                      <Button
+                        block
+                        color="link"
+                        className="btn-square"
+                        disabled
+                      ></Button>
+                    </Col>
+                    <Col col="6" sm="4" md="2" xl className="mb-3 mb-xl-0">
+                      <Button
+                        block
+                        color="link"
+                        className="btn-square"
+                        disabled
+                      ></Button>
+                    </Col>
+                    <Col col="6" sm="4" md="2" xl className="mb-3 mb-xl-0">
+                      <Button onClick={this.onOpenModal} color="default">
+                        <i className="fa fa-plus"></i>
+                      </Button>
+                      <Modal
+                        open={open}
+                        center="true"
+                        onClose={() => this.onCloseModal()}
+                      >
+                        <h2>Add a new skill</h2>
+                        <form onSubmit={this.onSubmit}>
+                          <Row>
+                            <Col xs="6">
+                              <FormGroup>
+                                <Label htmlFor="name">Skill name</Label>
+                                <Input
+                                  type="text"
+                                  id="name"
+                                  value={name}
+                                  placeholder="Enter skill"
+                                  onChange={this.onChangeName}
+                                  required
+                                />
+                              </FormGroup>
+                            </Col>
+
+                            <Col xs="6">
+                              <FormGroup>
+                                <Label htmlFor="ccnumber">Priority</Label>
+                                <Input
+                                  type="text"
+                                  id="ccnumber"
+                                  value={priority}
+                                  placeholder="Enter priority"
+                                  onChange={this.onChangePriority}
+                                  required
+                                />
+                                <Label htmlFor="ccnumber">
+                                  Current max priority:
+                                </Label>
+                              </FormGroup>
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col xs="4">
+                              <Button type="submit">Submit</Button>
+                            </Col>
+                          </Row>
+                        </form>
+                      </Modal>
+                    </Col>
+                  </Row>
+                  <Row className="align-items-center mt-3">
+                    <Col col="6" sm="4" md="2" xl className="mb-3 mb-xl-0">
+                      <Input
+                        type="text"
+                        placeholder="Search..."
+                        onChange={this.searchHandler}
+                        value={term}
+                      />
+                    </Col>
+                  </Row>
                 </CardBody>
               </Card>
             </Col>
