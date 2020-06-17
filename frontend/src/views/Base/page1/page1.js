@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Axios from "axios";
+import Select from "react-select";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -25,6 +26,7 @@ import PaginationComp from "./PaginationComp";
 import ModalComp from "./ModalComp";
 import { Modal } from "react-responsive-modal";
 import "react-responsive-modal/styles.css";
+import Top10 from "./Top10";
 function searchingfor(term) {
   return function (x) {
     return x.name.toLowerCase().includes(term.toLowerCase()) || !term;
@@ -40,9 +42,15 @@ class page1 extends Component {
       currentPage: 1,
       loading: false,
       open: false,
+      open2: false,
+      openTop: false,
       priority: "",
       name: "",
       source: "",
+      selectedValue: 0,
+      id: "",
+      idToDel: "",
+      maxPriority: [],
     };
 
     this.toggle = this.toggle.bind(this);
@@ -51,8 +59,10 @@ class page1 extends Component {
     // this.paginate = this.paginate.bind(this);
     this.searchHandler = this.searchHandler.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.onSubmit2 = this.onSubmit2.bind(this);
     this.onChangeName = this.onChangeName.bind(this);
     this.onChangePriority = this.onChangePriority.bind(this);
+    this.onOpenModal2 = this.onOpenModal2.bind(this);
   }
 
   toggle() {
@@ -83,6 +93,16 @@ class page1 extends Component {
         this.setState({
           skills: Response.data,
         });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    Axios.get("http://localhost:3000/api/skills/max")
+      .then((Response) => {
+        this.setState({
+          maxPriority: Response.data,
+        });
+        console.log(this.state.maxPriority);
       })
       .catch((error) => {
         console.log(error);
@@ -129,7 +149,22 @@ class page1 extends Component {
   onCloseModal = () => {
     this.setState({ open: false });
   };
+  onOpenModal2 = (e) => {
+    this.setState({ open2: true, id: e.currentTarget.id });
+    console.log("opened");
+  };
 
+  onCloseModal2 = () => {
+    this.setState({ open2: false });
+  };
+  onOpenModalTop = (e) => {
+    this.setState({ openTop: true });
+    console.log("opened");
+  };
+
+  onCloseModalTop = () => {
+    this.setState({ openTop: false });
+  };
   onSubmit(e) {
     e.preventDefault();
 
@@ -160,17 +195,77 @@ class page1 extends Component {
   onChangePriority(e) {
     this.setState({ priority: e.target.value });
   }
+
+  onSubmit2(e) {
+    e.preventDefault();
+    const obj = {
+      priority: this.state.selectedValue,
+    };
+    console.log("id:" + this.state.id);
+    Axios.post(
+      "http://localhost:3000/api/skills/update/" + this.state.id,
+      obj
+    ).then((res) => console.log(res.data));
+    this.Delete(this.state.idToDel);
+    //this.props.history.push("/");
+  }
+  handleChange = (e) => {
+    console.log(e.value);
+    this.setState({ selectedValue: e.value });
+    if (e.value == 2) {
+      Axios.get("http://localhost:3000/api/skills/az")
+        .then((Response) => {
+          this.setState({
+            skills: Response.data,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else if (e.value == 1) {
+      Axios.get("http://localhost:3000/api/skills/za")
+        .then((Response) => {
+          this.setState({
+            skills: Response.data,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else if (e.value == 3) {
+      Axios.get("http://localhost:3000/api/skills/priorityUp")
+        .then((Response) => {
+          this.setState({
+            skills: Response.data,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else if (e.value == 4) {
+      Axios.get("http://localhost:3000/api/skills/priorityDown")
+        .then((Response) => {
+          this.setState({
+            skills: Response.data,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  };
   render() {
-    const sapce =
-      "                                                                                                                                                                                 ";
-    const {
+    let {
       term,
       skills,
       currentPage,
       skillsPerPage,
       open,
+      open2,
       name,
       priority,
+      selectedValue,
+      openTop,
     } = this.state;
     const indexOfLastSkill = currentPage * skillsPerPage;
     const indexOfFirstSkill = indexOfLastSkill - skillsPerPage;
@@ -179,6 +274,18 @@ class page1 extends Component {
       this.setState({
         currentPage: pageNumber,
       });
+
+    const selectArray = skills.map((opt) => ({
+      label: opt.name,
+      value: opt.nbr,
+      a: opt._id,
+    }));
+    const filterArray = [
+      { label: "a -> z", value: "1" },
+      { label: "z -> a", value: "2" },
+      { label: "priority high to low", value: "3" },
+      { label: "priority low to high", value: "4" },
+    ];
     return (
       <div>
         <div className="animated fadeIn">
@@ -215,6 +322,13 @@ class page1 extends Component {
                               >
                                 <i className="fa fa-trash"></i>
                               </button>
+                              <button
+                                id={_id}
+                                className="btn-pill btn btn-info"
+                                onClick={this.onOpenModal2}
+                              >
+                                <i className="fa fa-recycle"></i>
+                              </button>
                             </td>
                           </tr>
                         ))}
@@ -228,6 +342,37 @@ class page1 extends Component {
                 </CardBody>
               </Card>
             </Col>
+            <Modal
+              open={open2}
+              center="true"
+              onClose={() => this.onCloseModal2()}
+            >
+              <br />
+              <h2>Merge two skills with each other</h2>
+              <br />
+              <form onSubmit={this.onSubmit2}>
+                <Row>
+                  <Col xs="6">
+                    <FormGroup>
+                      <Select
+                        options={selectArray}
+                        onChange={(opt) =>
+                          this.setState({
+                            selectedValue: opt.value,
+                            idToDel: opt.a,
+                          })
+                        }
+                      />
+                    </FormGroup>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs="4">
+                    <Button type="submit">Submit</Button>
+                  </Col>
+                </Row>
+              </form>
+            </Modal>
             <Col xs="12" md="4">
               <Card>
                 <CardBody>
@@ -308,6 +453,11 @@ class page1 extends Component {
                                 />
                                 <Label htmlFor="ccnumber">
                                   Current max priority:
+                                  {this.state.maxPriority.map(
+                                    ({ nbr, name }) => (
+                                      <b> {nbr}</b>
+                                    )
+                                  )}
                                 </Label>
                               </FormGroup>
                             </Col>
@@ -329,6 +479,30 @@ class page1 extends Component {
                         onChange={this.searchHandler}
                         value={term}
                       />
+                    </Col>
+                  </Row>
+                  <Row className="align-items-center mt-3">
+                    <Col col="6" sm="4" md="2" xl className="mb-3 mb-xl-0">
+                      <Select
+                        placeholder={"Filter..."}
+                        options={filterArray}
+                        onChange={this.handleChange}
+                        isSearchable={false}
+                      />
+                    </Col>
+                  </Row>
+                  <Row className="align-items-center mt-3">
+                    <Col col="6" sm="4" md="2" xl className="mb-3 mb-xl-0">
+                      <Button onClick={this.onOpenModalTop} color="info">
+                        Top 10 skills
+                      </Button>
+                      <Modal
+                        open={openTop}
+                        center="true"
+                        onClose={() => this.onCloseModalTop()}
+                      >
+                        <Top10 />
+                      </Modal>
                     </Col>
                   </Row>
                 </CardBody>
