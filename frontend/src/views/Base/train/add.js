@@ -100,7 +100,7 @@ onSubmit(e) {
       <div style={{marginTop: 20}}>
                 <h3>Add a Training Session</h3>
                 <form onSubmit={this.onSubmit}>
-                    <div className="form-group">
+                    <div className="form-group" class="col-md-7">
                         <label>Subject: </label>
                         <input  type="text"
                                 className="form-control"
@@ -108,7 +108,7 @@ onSubmit(e) {
                                 onChange={this.onChangeSubject}
                                 required/>
                     </div>
-                    <div className="form-group">
+                    <div className="form-group" class="col-md-7">
                         <label>TrainerName: </label>
                         <input  type="text"
                                 className="form-control"
@@ -129,7 +129,7 @@ onSubmit(e) {
                         <label>Time: </label>
                         <input  type="time"
                                 min="09:00" 
-                                max="16:00" 
+                                max="20:00" 
                                 className="form-control"
                                 value={this.state.h1}
                                 onChange={this.onChangeH1}
@@ -149,7 +149,7 @@ onSubmit(e) {
                         <label>Time: </label>
                         <input  type="time"
                                 min="10:00" 
-                                max="18:00" 
+                                max="22:00" 
                                 className="form-control"
                                 value={this.state.h2}
                                 onChange={this.onChangeH2}

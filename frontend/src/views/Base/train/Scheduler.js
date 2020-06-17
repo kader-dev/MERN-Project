@@ -17,14 +17,24 @@ export default class Scheduler extends Component {
             'today',
             'next'
         ];
- 
-        const { events } = this.props;
         scheduler.init(this.schedulerContainer);
-        scheduler.clearAll();
-        scheduler.parse(events);
+        this.loadData()
+    }
+
+    loadData(){
+        if (this.props!==undefined) {
+            const { events } = this.props;
+            scheduler.clearAll();
+            scheduler.parse(events);
+        }
+        else {
+            console.log("undefined data")
+        }
     }
  
     render() {
+        this.loadData()
+
         return (
             <div
                 ref={ (input) => { this.schedulerContainer = input } }

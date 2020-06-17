@@ -8,7 +8,6 @@ class edit extends Component {
     this.onChangeName = this.onChangeName.bind(this);
     this.onChangeLastname = this.onChangeLastname.bind(this);
     this.onChangeAdress = this.onChangeAdress.bind(this);
-    this.onChangeSkills = this.onChangeSkills.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
     this.toggle = this.toggle.bind(this);
@@ -20,7 +19,6 @@ class edit extends Component {
       Name: '',
       Lastname: '',
       Adress: '',
-      Skills: ''
     };
   }
   toggle() {
@@ -40,7 +38,6 @@ class edit extends Component {
                 Name: response.data.Name,
                 Lastname: response.data.Lastname,
                 Adress: response.data.Adress,
-                Skills: response.data.Skills
             })
         })
         .catch(function(error) {
@@ -63,12 +60,6 @@ onChangeLastname(e) {
 onChangeAdress(e) {
     this.setState({
         Adress: e.target.value
-    });
-}
-
-onChangeSkills(e) {
-    this.setState({
-        Skills: e.target.value
     });
 }
 
@@ -113,14 +104,6 @@ onSubmit(e) {
                                 className="form-control"
                                 value={this.state.Adress}
                                 onChange={this.onChangeAdress}
-                                />
-                    </div>
-                    <div className="form-group">
-                        <label>Skills: </label>
-                        <input  type="text"
-                                className="form-control"
-                                value={this.state.Skills}
-                                onChange={this.onChangeSkills}
                                 />
                     </div>
                         <br/>

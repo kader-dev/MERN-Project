@@ -11,15 +11,10 @@ let Todo = new Schema({
     Adress: {
         type: String
     },
-    Skills: {
-        type: String
-    },
-    level: {
-        type: String
-    },
-    image: {
-        type: String
-    }
+    Skills:[ {
+        SkillName : {type: String},
+        Level : {type: String}
+    }],
 });
 
 module.exports = mongoose.model('Todo', Todo);

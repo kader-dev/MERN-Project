@@ -24,7 +24,86 @@ class page1 extends Component {
 
   render() {
     return <div className="animated fadeIn">
-      <button>haha</button>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Subject/Username</th>
+                <th>Morad</th>
+                <th>Hamma</th>
+                <th>Amal</th>
+                <th>Hatem</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>JEE</td>
+                <td><span class="badge badge-secondary">Basic</span></td>
+                <td><span class="badge badge-success">Expert</span></td>
+                <td><span class="badge badge-success">Expert</span></td>
+                <td><span class="badge badge-warning">Medium</span></td>
+              </tr>
+              <tr>
+                <td>.Net</td>
+                <td><span class="badge badge-warning">Medium</span></td>
+                <td><span class="badge badge-success">Expert</span></td>
+                <td><span class="badge badge-warning">Medium</span></td>
+                <td><span class="badge badge-secondary">Basic</span></td>
+              </tr>
+              <tr>
+                <td>React</td>
+                <td><span class="badge badge-secondary">Basic</span></td>
+                <td><span class="badge badge-secondary">Basic</span></td>
+                <td><span class="badge badge-secondary">Basic</span></td>
+                <td><span class="badge badge-success">Expert</span></td>
+              </tr>
+              <tr>
+                <td>JEE</td>
+                <td><span class="badge badge-secondary">Basic</span></td>
+                <td><span class="badge badge-success">Expert</span></td>
+                <td><span class="badge badge-success">Expert</span></td>
+                <td><span class="badge badge-warning">Medium</span></td>
+              </tr>
+              <tr>
+                <td>.Net</td>
+                <td><span class="badge badge-warning">Medium</span></td>
+                <td><span class="badge badge-success">Expert</span></td>
+                <td><span class="badge badge-warning">Medium</span></td>
+                <td><span class="badge badge-secondary">Basic</span></td>
+              </tr>
+              <tr>
+                <td>React</td>
+                <td><span class="badge badge-secondary">Basic</span></td>
+                <td><span class="badge badge-secondary">Basic</span></td>
+                <td><span class="badge badge-secondary">Basic</span></td>
+                <td><span class="badge badge-success">Expert</span></td>
+              </tr>
+              <tr>
+                <td>JEE</td>
+                <td><span class="badge badge-secondary">Basic</span></td>
+                <td><span class="badge badge-success">Expert</span></td>
+                <td><span class="badge badge-success">Expert</span></td>
+                <td><span class="badge badge-warning">Medium</span></td>
+              </tr>
+              <tr>
+                <td>.Net</td>
+                <td><span class="badge badge-warning">Medium</span></td>
+                <td><span class="badge badge-success">Expert</span></td>
+                <td><span class="badge badge-warning">Medium</span></td>
+                <td><span class="badge badge-secondary">Basic</span></td>
+              </tr>
+              <tr>
+                <td>React</td>
+                <td><span class="badge badge-secondary">Basic</span></td>
+                <td><span class="badge badge-secondary">Basic</span></td>
+                <td><span class="badge badge-secondary">Basic</span></td>
+                <td><span class="badge badge-success">Expert</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>;
   }
 }

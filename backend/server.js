@@ -20,7 +20,7 @@ connection.once('open', function() {
     console.log("MongoDB database connection established successfully");
 })
 
-///////////////////////////
+/////////////////////////// teacher list 
 ///////////////////////////
 todoRoutes.route('/').get(function(req, res) {
     Todo.find(function(err, todos) {
@@ -41,6 +41,7 @@ todoRoutes.route('/:id').get(function(req, res) {
 
 todoRoutes.route('/add').post(function(req, res) {
     let todo = new Todo(req.body);
+    
     todo.save()
         .then(todo => {
             res.status(200).json({'todo': 'todo added successfully'});
@@ -58,9 +59,40 @@ todoRoutes.route('/update/:id').post(function(req, res) {
             todo.Name = req.body.Name;
             todo.Lastname = req.body.Lastname;
             todo.Adress = req.body.Adress;
-            todo.Skills = req.body.Skills;
-            todo.level = req.body.level;
+            todo.save().then(todo => {
+                res.json('Todo updated');
+            })
+            .catch(err => {
+                res.status(400).send("Update not possible");
+            });
+    });
+});
 
+todoRoutes.route('/update2/:id').post(function(req, res) {
+    Todo.findById(req.params.id, function(err, todo) {
+        if (!todo)
+            res.status(404).send('data is not found');
+        else
+            todo.Skills.push(req.body.Skills);
+            todo.save().then(todo => {
+                res.json('Todo updated');
+            })
+            .catch(err => {
+                res.status(400).send("Update not possible");
+            });
+    });
+});
+
+todoRoutes.route('/skill/:id').post(function(req, res) {
+    Todo.findById(req.params.id, function(err, todo) {
+        if (!todo)
+            res.status(404).send('data is not found');
+        else
+            todo.Skills.SkillName = req.body.SkillName;
+            todo.push(Skills.SkillName) = req.body.SkillName;
+            todo.Skills.Level = req.body.Level;
+            todo.push(Skills.Level) = req.body.Level;
+ 
             todo.save().then(todo => {
                 res.json('Todo updated');
             })
@@ -76,7 +108,7 @@ todoRoutes.route('/delete/:id').delete(function(req, res) {
         .catch(err => res.status(400).json('error'+ err))
 });
 
-///////////////////////////
+/////////////////////////// training list
 ///////////////////////////
 trainRoutes.route('/').get(function(req, res) {
     Train.find(function(err, todos) {
@@ -85,6 +117,13 @@ trainRoutes.route('/').get(function(req, res) {
         } else {
             res.json(todos);
         }
+    });
+});
+
+trainRoutes.route('/:id').get(function(req, res) {
+    let id = req.params.id;
+    Train.findById(id, function(err, todo) {
+        res.json(todo);
     });
 });
 

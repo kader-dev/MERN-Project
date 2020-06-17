@@ -21,6 +21,10 @@ export default {
       name: "Page 1",
       url: "/page1",
       icon: "icon-puzzle",
+    },{
+      name: "Page 2",
+      url: "/page2",
+      icon: "icon-puzzle",
     },
     {
       name: "TeachersList",

@@ -2,17 +2,39 @@ import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
+
+function dd(id) {
+  axios.delete('http://localhost:4000/todos/delete/'+id)
+      .then((res) => {
+          console.log('Successfully deleted!');
+      }).catch((error) => {
+          console.log(error)
+      });
+}
+
 const Todo = props => (
   <tr>
       <td>{props.todo.Name}</td>
       <td>{props.todo.Lastname}</td>
       <td>{props.todo.Adress}</td>
-      <td>{props.todo.Skills}</td>
-      <td>{props.todo.level}</td>
-      <td>{props.todo.image}</td>
+
+      <td>
+        {props.todo.Skills.map((item, key) =>
+          <div>
+            <li>{item.SkillName}
+            &nbsp;-&nbsp;
+            <span>{item.Level}</span></li>
+          </div>
+        )}
+      </td>
+
       <td>
           <Link to={"/teacher/edit/"+props.todo._id}>Edit</Link>
-            {/* <a href="#" onclick={() => {props.delete(props.todo._id)}}>del</a> */}
+          <br></br>
+          <a href="/" onClick={() => {dd(props.todo._id)}}>del</a>
+          <br></br>
+          <Link to={"/teacher/skill/"+props.todo._id}>Add Skill</Link>
+          {/* <a href="#" onclick={() => {props.delete(props.todo._id)}}>del</a> */}
       </td>
   </tr>
 )
@@ -53,14 +75,14 @@ class teacherList extends Component {
     })
 }
 
-  componentDidMount() {
-    axios.get('http://localhost:4000/todos/')
-        .then(response => {
-            this.setState({todos: response.data});
-        })
-        .catch(function (error) {
-            console.log(error);
-        })
+componentDidMount() {
+  axios.get('http://localhost:4000/todos/')
+      .then(response => {
+        this.setState({todos: response.data});
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
 }
 
 componentDidUpdate() {
@@ -89,9 +111,7 @@ todoList() {
                             <th>Name</th>
                             <th>Lastname</th>
                             <th>Adress</th>
-                            <th>Skills</th>
-                            <th>Level</th>
-                            <th>Certificate</th>
+                            <th>Skills</th>                            
                             <th>Actions</th>                            
                         </tr>
                     </thead>
