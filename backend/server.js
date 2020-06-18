@@ -5,10 +5,12 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const todoRoutes = express.Router();
 const trainRoutes = express.Router();
+const skillRoutes = express.Router();
 const PORT = 4000;
 
 let Todo = require('./todo.model');
 let Train = require('./training.model');
+let Skill = require('./skills.model');
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -147,7 +149,32 @@ trainRoutes.route('/delete/:id').delete(function(req, res) {
 
 app.use('/todos', todoRoutes);
 app.use('/train', trainRoutes);
+app.use('/skill', skillRoutes);
 
 app.listen(PORT, function() {
     console.log("Server is running on Port: " + PORT);
+});
+
+/////////////
+
+skillRoutes.route('/').get(function(req, res) {
+    Skill.find(function(err, todos) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json(todos);
+        }
+    });
+});
+
+skillRoutes.route('/add').post(function(req, res) {
+    let todo = new Skill(req.body);
+    
+    todo.save()
+        .then(todo => {
+            res.status(200).json({'todo': 'todo added successfully'});
+        })
+        .catch(err => {
+            res.status(400).send('adding new todo failed');
+        });
 });

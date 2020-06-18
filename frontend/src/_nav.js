@@ -22,7 +22,7 @@ export default {
       url: "/page1",
       icon: "icon-puzzle",
     },{
-      name: "Page 2",
+      name: "Skill Matrix",
       url: "/page2",
       icon: "icon-puzzle",
     },
