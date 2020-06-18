@@ -21,6 +21,7 @@ class add extends Component {
       Adress: '',
     };
   }
+  
   toggle() {
     this.setState({ collapse: !this.state.collapse });
   }
@@ -68,7 +69,7 @@ onSubmit(e) {
     })
 }
 
-  render() {
+  render() {    
     return <div className="animated fadeIn">
       <div style={{marginTop: 20}}>
                 <h3>Add New Teacher</h3>
@@ -92,13 +93,49 @@ onSubmit(e) {
                                 />
                     </div>
                     <div className="form-group">
-                        <label><b>Address: </b></label>
-                        <input  type="text"
-                                className="form-control"
-                                value={this.state.Adress}
-                                onChange={this.onChangeAdress}
-                                required
-                                />
+                        <label><b>Department:</b></label>
+                        <br></br>
+                        <div className="form-check form-check-inline">
+                            <input  className="form-check-input"
+                                    type="radio"
+                                    name="priorityOptions"
+                                    id="1"
+                                    value="Informatique"
+                                    onChange={this.onChangeAdress}
+                                    />
+                            <label className="form-check-label">Informatique</label>
+                        </div>
+                        <div className="form-check form-check-inline">
+                            <input  className="form-check-input"
+                                    type="radio"
+                                    name="priorityOptions"
+                                    id="2"
+                                    value="Telecommunication"
+                                    onChange={this.onChangeAdress}
+                                    />
+                            <label className="form-check-label">Telecommunication</label>
+                        </div>
+                        <div className="form-check form-check-inline">
+                            <input  className="form-check-input"
+                                    type="radio"
+                                    name="priorityOptions"
+                                    id="3"
+                                    value="Electromecanique"
+                                    onChange={this.onChangeAdress}
+                                    />
+                            <label className="form-check-label">Electromecanique</label>
+                        </div>
+                        <div className="form-check form-check-inline">
+                            <input  className="form-check-input"
+                                    type="radio"
+                                    name="priorityOptions"
+                                    id="4"
+                                    value="Genie Civil"
+                                    onChange={this.onChangeAdress}
+                                    />
+                            <label className="form-check-label">Genie Civil</label>
+                        </div>
+                    
                     </div>
                     <div className="form-group">
                         <input type="submit" value="Create Teacher" className="btn btn-primary" />

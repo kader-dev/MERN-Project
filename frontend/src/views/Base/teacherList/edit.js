@@ -78,6 +78,12 @@ onSubmit(e) {
 }
 
   render() {
+    const filterArray = [
+      { label: "Informatique", value: "1" },
+      { label: "Telecommunication", value: "2" },
+      { label: "Electromecanique", value: "3" },
+      { label: "Genie Civil", value: "4" },
+    ];
     return <div className="animated fadeIn">
       <div>
                 <h3>Update Teacher</h3>
@@ -99,12 +105,49 @@ onSubmit(e) {
                                 />
                     </div>
                     <div className="form-group">
-                        <label>Adress: </label>
-                        <input  type="text"
-                                className="form-control"
-                                value={this.state.Adress}
-                                onChange={this.onChangeAdress}
-                                />
+                        <label><b>Department:</b></label>
+                        <br></br>
+                        <div className="form-check form-check-inline">
+                            <input  className="form-check-input"
+                                    type="radio"
+                                    name="priorityOptions"
+                                    id="1"
+                                    value="Informatique"
+                                    onChange={this.onChangeAdress}
+                                    />
+                            <label className="form-check-label">Informatique</label>
+                        </div>
+                        <div className="form-check form-check-inline">
+                            <input  className="form-check-input"
+                                    type="radio"
+                                    name="priorityOptions"
+                                    id="2"
+                                    value="Telecommunication"
+                                    onChange={this.onChangeAdress}
+                                    />
+                            <label className="form-check-label">Telecommunication</label>
+                        </div>
+                        <div className="form-check form-check-inline">
+                            <input  className="form-check-input"
+                                    type="radio"
+                                    name="priorityOptions"
+                                    id="3"
+                                    value="Electromecanique"
+                                    onChange={this.onChangeAdress}
+                                    />
+                            <label className="form-check-label">Electromecanique</label>
+                        </div>
+                        <div className="form-check form-check-inline">
+                            <input  className="form-check-input"
+                                    type="radio"
+                                    name="priorityOptions"
+                                    id="4"
+                                    value="Genie Civil"
+                                    onChange={this.onChangeAdress}
+                                    />
+                            <label className="form-check-label">Genie Civil</label>
+                        </div>
+                    
                     </div>
                         <br/>
                         <div className="form-group">

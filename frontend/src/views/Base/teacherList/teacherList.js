@@ -31,7 +31,7 @@ const Todo = props => (
       <td>
           <Link to={"/teacher/edit/"+props.todo._id}>Edit</Link>
           <br></br>
-          <a href="/" onClick={() => {dd(props.todo._id)}}>del</a>
+          <a href="/" onClick={() => {dd(props.todo._id)}}>Delete</a>
           <br></br>
           <Link to={"/teacher/skill/"+props.todo._id}>Add Skill</Link>
           {/* <a href="#" onclick={() => {props.delete(props.todo._id)}}>del</a> */}
@@ -110,7 +110,7 @@ todoList() {
                         <tr>
                             <th>Name</th>
                             <th>Lastname</th>
-                            <th>Adress</th>
+                            <th>Department</th>
                             <th>Skills</th>                            
                             <th>Actions</th>                            
                         </tr>

@@ -15,6 +15,8 @@ class page1 extends Component {
       todos: [],
       todoss: [],
       aa:[],
+      search:'',
+      filter:'',
     };
     
     this.teachersSkills=[];
@@ -82,12 +84,107 @@ componentDidUpdate() {
         console.log(error);
     })   
 }
+
+updateSearch(event){
+  this.setState({search: event.target.value.substr(0,20)})
+}
+updateFilter(event){
+  this.setState({filter: event.target.value.substr(0,20)})
+}
   render() {
+
+    const filterArray = [
+      { label: "Informatique", value: "Informatique" },
+      { label: "Telecommunication", value: "Telecommunication" },
+      { label: "Electromecanique", value: "Electromecanique" },
+      { label: "Genie Civil", value: "Genie Civil" },
+    ];
+
+    let filtered = this.state.todos.filter(
+      (todoss) => {
+        return todoss.Name.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1 
+               &&
+               todoss.Adress.toLowerCase().indexOf(this.state.filter.toLowerCase()) !== -1;
+      }
+    );
    
     return <div className="animated fadeIn">
-      <h2 style={{ color: "red" }}>Top 10 Skill Matrix</h2>
+      <h2 style={{ color: "red" }}>Top Skill Matrix</h2>
+      <div class="col " float="left">
+          <input  type="text"
+                  placeholder="Search by Teacher's name ..."
+                  float= "right"
+                  className="form-control"
+                  value={this.state.search}
+                  onChange={this.updateSearch.bind(this)}
+                  />
+          </div>
       <div class="card-body">
         <div class="table-responsive">
+         
+          <div display= "inline-block">
+          <div className="form-group" class="column" display="flex">
+                        <label><b>Filter By Department:</b>&nbsp;&nbsp;</label>
+                        <div className="form-check form-check-inline">
+                            <input  className="form-check-input"
+                                    type="radio"
+                                    name="priorityOptions"
+                                    id="4"
+                                    value="i"
+                                    onChange={this.updateFilter.bind(this)}
+                                    />
+                            <label className="form-check-label">All Departments</label>
+                        </div>
+                        <br></br>
+                        <labele>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        </labele>
+                        <div className="form-check form-check-inline">
+                            <input  className="form-check-input"
+                                    type="radio"
+                                    name="priorityOptions"
+                                    id="1"
+                                    value="Informatique"
+                                    onChange={this.updateFilter.bind(this)}
+                                    />
+                            <label className="form-check-label">Informatique</label>
+                        </div>
+                        <div className="form-check form-check-inline">
+                            <input  className="form-check-input"
+                                    type="radio"
+                                    name="priorityOptions"
+                                    id="2"
+                                    value="Telecommunication"
+                                    onChange={this.updateFilter.bind(this)}
+                                    />
+                            <label className="form-check-label">Telecommunication</label>
+                        </div>
+                        <div className="form-check form-check-inline">
+                            <input  className="form-check-input"
+                                    type="radio"
+                                    name="priorityOptions"
+                                    id="3"
+                                    value="Electromecanique"
+                                    onChange={this.updateFilter.bind(this)}
+                                    />
+                            <label className="form-check-label">Electromecanique</label>
+                        </div>
+                        <div className="form-check form-check-inline">
+                            <input  className="form-check-input"
+                                    type="radio"
+                                    name="priorityOptions"
+                                    id="4"
+                                    value="Genie Civil"
+                                    onChange={this.updateFilter.bind(this)}
+                                    />
+                            <label className="form-check-label">Genie Civil</label>
+                        </div>
+                    
+                    </div>
+                  </div>
+
+          <br></br>
           <table class="table">
             <thead>
             <tr>
@@ -101,7 +198,7 @@ componentDidUpdate() {
             </tr>
             </thead>
             <tbody>
-            {this.state.todos.map(( listValue, key ) => {
+            {filtered.map(( listValue, key ) => {
             return (
               <tr key={key} >
                 
