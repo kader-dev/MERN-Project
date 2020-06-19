@@ -10,20 +10,25 @@ const User = require('../models/user')
 
 //add up
 router.post('/', up, async (req, res) => {
+
     const up = new unité_pédagogique({
         ...req.body,
         Department: req.Department
     })
+
+
+
     try {
         await up.save()
         res.status(200).send(up)
     } catch (e) {
         res.status(400).send(e.message)
     }
-    const manager = await User.findOne({ "email": req.body.manager })
+
+    const manager = await User.findOne({ "email": req.body.manager.email })
     if (!manager.roles.includes("up_manager")) {
         await User.findOneAndUpdate(
-            { "email": email },
+            { "email": manager.email },
             { $push: { "roles": "up_manager" } },
             { returnNewDocument: true })
     }

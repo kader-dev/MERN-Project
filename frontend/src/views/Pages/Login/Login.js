@@ -103,10 +103,8 @@ class Login extends Component {
                         <Input type="password" placeholder="Password" id="password" name="password" onChange={this.onChange} />
                       </InputGroup>
                       <Row>
-                        <Col xs="6">
+                        <Col>
                           <Button color="primary" className="px-4">Login</Button>
-                        </Col>
-                        <Col xs="6">
                           <GoogleLogin
                             clientId="223699417515-n3cid348h0f557i948hi3g0cj9gb07uu.apps.googleusercontent.com"
                             buttonText="Login"
@@ -120,9 +118,6 @@ class Login extends Component {
                             callback={this.responseFacebook.bind(this.responseFacebook)}
                           />
                         </Col>
-                        <Col xs="6" className="text-right">
-                          <Button color="link" className="px-0">Forgot password?</Button>
-                        </Col>
                       </Row>
                     </Form>
                   </CardBody>
@@ -131,8 +126,7 @@ class Login extends Component {
                   <CardBody className="text-center">
                     <div>
                       <h2>Sign up</h2>
-                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua.</p>
+
                       <Link to="/register">
                         <Button color="primary" className="mt-3" active tabIndex={-1}>Register Now!</Button>
                       </Link>

@@ -28,8 +28,9 @@ class Users extends Component {
   }
 
 
-  onDeleteClick = ({r}) => {
-    console.log({r})
+  onDeleteClick = (r,v) => {
+    console.log(r)
+    console.log(v)
   }
   render() {
     const { users } = this.props.users
@@ -61,7 +62,7 @@ class Users extends Component {
                         <td>
                           {user.roles.map((r => <span>
                             <i className="icon-close icons font-2xl d-block mt-4"
-                              onClick={this.onDeleteClick.bind(this,r, user.email)}> {r}</i>
+                              onClick={this.onDeleteClick.bind(this, r,user.email)}> {r}</i>
                             <br></br></span>
                           ))}
                         </td>

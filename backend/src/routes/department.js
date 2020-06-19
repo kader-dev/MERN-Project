@@ -74,7 +74,7 @@ router.patch('/:id', department, async (req, res) => {
             return res.status(404).send("deparment not found")
         }
         updates.forEach((update) => department[update] = req.body[update])
-        await deparment.save()
+        await department.save()
         const list_departments = await Department.find({})
         res.send(list_departments)
     } catch (e) {
