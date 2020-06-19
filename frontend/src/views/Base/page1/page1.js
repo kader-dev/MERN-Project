@@ -22,6 +22,8 @@ import {
   InputGroupText,
   Label,
 } from "reactstrap";
+import "./load.css";
+import Spinner from "./spinner.gif";
 import PaginationComp from "./PaginationComp";
 import ModalComp from "./ModalComp";
 import { Modal } from "react-responsive-modal";
@@ -123,6 +125,7 @@ class page1 extends Component {
     });
   }
   jobiclick = () => {
+    this.setState({ loading: true });
     Axios.get("http://localhost:3000/api/jobi").then((Response) => {
       this.setState({
         loading: Response.data,
@@ -139,6 +142,7 @@ class page1 extends Component {
           console.log(error);
         });
       console.log("upp");
+      this.setState({ loading: false });
     }, 130000);
   };
   onOpenModal = () => {
@@ -266,6 +270,7 @@ class page1 extends Component {
       priority,
       selectedValue,
       openTop,
+      loading,
     } = this.state;
     const indexOfLastSkill = currentPage * skillsPerPage;
     const indexOfFirstSkill = indexOfLastSkill - skillsPerPage;
@@ -276,10 +281,19 @@ class page1 extends Component {
       });
 
     const selectArray = skills.map((opt) => ({
-      label: opt.name,
+      label: opt.name + ": " + opt.nbr,
       value: opt.nbr,
       a: opt._id,
     }));
+    let btn;
+    if (loading) {
+      btn = (
+        <div className="fp-container">
+          <img src={Spinner} className="fp-loader" alt="loading" />
+        </div>
+      );
+    }
+
     const filterArray = [
       { label: "a -> z", value: "1" },
       { label: "z -> a", value: "2" },
@@ -377,10 +391,17 @@ class page1 extends Component {
               <Card>
                 <CardBody>
                   <Row className="align-items-center mt-3">
-                    <Col col="3" sm="4" md="2" xl className="mb-3 mb-xl-0">
-                      <Button color="success" onClick={this.jobiclick}>
-                        Jobi.tn
-                      </Button>
+                    <Col col="4" sm="4" md="2" xl className="mb-3 mb-xl-0">
+                      {!loading && (
+                        <Button color="success" onClick={this.jobiclick}>
+                          Jobi.tn
+                        </Button>
+                      )}
+                      {loading && (
+                        <Button color="success" disabled>
+                          scrapping...
+                        </Button>
+                      )}
                     </Col>
                     <Col col="6" sm="4" md="2" xl className="mb-3 mb-xl-0">
                       <Button
@@ -510,6 +531,7 @@ class page1 extends Component {
             </Col>
           </Row>
         </div>
+        {btn}
       </div>
     );
   }
