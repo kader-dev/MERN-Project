@@ -1,0 +1,16 @@
+export const GET_SKILLS = 'GET_SKILLS'
+export const SKILLS_LOADING = 'SKILLS_LOADING'
+export const ADD_SKILL = 'ADD_SKILL'
+export const DELETE_SKILL = 'DELETE_SKILL'
+export const UPDATE_SKILL = 'UPDATE_SKILL'
+
+
+
+
+
+
+
+
+export const DELETE_SKILL_FAIL = 'DELETE_SKILL_FAIL'
+export const ADD_SKILL_FAIL = 'ADD_SKILL_FAIL'
+export const UPDATE_SKILL_FAIL = 'UPDATE_SKILL_FAIL'

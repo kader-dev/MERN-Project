@@ -1,0 +1,43 @@
+import React, { Fragment } from 'react'
+import Unites from './Unites'
+import MyUnite from './My_unite'
+import My_All_Unites from './My_All_Unites'
+import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
+
+class All_Unites extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+        }
+    }
+
+    static propTypes = {
+        user: PropTypes.object.isRequired,
+    }
+
+    render() {
+        const { roles } = this.props.user
+        return (
+            <div>
+                {roles.includes('department_manager') ?
+                    <My_All_Unites {...this.props} />
+                    :
+                    <Fragment>
+                        {roles.includes('up_manager') ?
+                            <MyUnite {...this.props} />
+                            :
+                            <Unites {...this.props} />
+                        }
+                    </Fragment>
+                }
+            </div>
+        )
+    }
+}
+
+const mapStateToProps = state => ({
+    user: state.user.user,
+})
+
+export default connect(mapStateToProps)(All_Unites)
